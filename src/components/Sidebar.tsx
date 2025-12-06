@@ -15,9 +15,8 @@ export function Sidebar({ activeKey }: { activeKey?: string }) {
   const current = activeKey ?? pathname?.split("/")[1] ?? "apps";
 
   return (
-    <aside className="flex h-screen w-[260px] flex-col gap-8 border-r border-gray-200 bg-background px-6 py-6 shadow-card">
-      <div className="text-xl font-semibold text-ink">Google Play</div>
-      <nav className="flex flex-col gap-2">
+    <aside className="hidden w-[256px] flex-col gap-2 overflow-y-auto py-2 pl-4 lg:flex">
+      <nav className="flex flex-col gap-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = current === item.key || pathname === item.href;
@@ -25,18 +24,17 @@ export function Sidebar({ activeKey }: { activeKey?: string }) {
             <Link
               key={item.key}
               href={item.href}
-              className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition hover:bg-green-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                isActive ? "bg-green-100 text-[#01875f]" : "text-muted"
+              className={`flex items-center gap-4 rounded-l-full px-6 py-3 text-sm font-medium transition-colors hover:bg-gray-50 ${
+                isActive
+                  ? "bg-[#e8f0fe] text-[#01875f] hover:bg-[#e8f0fe]"
+                  : "text-[#5f6368]"
               }`}
             >
-              <span
-                className={`flex h-9 w-9 items-center justify-center rounded-xl ${
-                  isActive ? "bg-white text-[#01875f]" : "bg-surface text-muted"
-                }`}
-              >
-                <Icon className="h-5 w-5" strokeWidth={0} fill="currentColor" />
-              </span>
-              <span>{item.label}</span>
+              <Icon
+                className={`h-6 w-6 ${isActive ? "fill-[#01875f]" : ""}`}
+                strokeWidth={isActive ? 2 : 2}
+              />
+              <span className="text-[15px]">{item.label}</span>
             </Link>
           );
         })}
