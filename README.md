@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Play Store Lite / 谷歌应用商店风格示例
 
-## Getting Started
+Next.js 16 (App Router) + Tailwind v4 的 Google Play 风格示例，内置 Prisma + SQLite、本地图标数据，支持分类列表、详情页、模拟安装按钮、后台新增页面。  
+Google Play–style sample built with Next.js 16 (App Router) + Tailwind v4. Uses Prisma + SQLite with local seeded icons, includes category grids, detail pages, mock install button, and an admin add page.
 
-First, run the development server:
+## 技术栈 / Tech Stack
+- Next.js 16 (App Router, TypeScript, Webpack)
+- Tailwind CSS v4（自定义 M3 调色板、圆角、阴影）
+- Prisma ORM + SQLite（`prisma/seed.ts` 本地种子数据）
+- lucide-react、clsx、tailwind-merge
 
+## 开发 & 脚本 / Development Scripts
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npx prisma db seed          # 生成本地数据 / seed local data
+npm run dev -- --hostname 127.0.0.1 --port 3000
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 功能概览 / Features
+- 首页 `/`、`/games`、`/kids`：服务端获取 Prisma 数据，Play Store 风格卡片网格、导航、搜索框与筛选 Chips。  
+  Category grids with server-fetched data and Play-style UI.
+- 详情页 `/app/[id]`：大图标、评分/下载/年龄、Data Safety 卡片；模拟安装按钮（客户端状态 + Server Action 更新 `isInstalled`）。  
+  Detail page with large icon, rating/downloads, data safety card, and mock install button persisted via server action.
+- 后台 `/admin/add`：表单创建新 App，写入数据库并跳转详情页。  
+  Admin add page to create apps and redirect to their detail view.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 目录结构 / Structure
+- `src/app/page.tsx`、`/games/page.tsx`、`/kids/page.tsx`：分类列表 / category pages
+- `src/app/app/[id]/page.tsx`：详情页 / detail page
+- `src/components/AppCard.tsx`、`Sidebar.tsx`、`InstallButton.tsx`
+- `src/app/actions.ts`：Server Action（安装状态更新 / install state update）
+- `src/lib/prisma.ts`：Prisma 单例 / singleton
+- `prisma/schema.prisma`、`prisma/seed.ts`：模型与种子（使用 `public/icons/*.jpg` 本地图标）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 部署提示 / Deploy Notes
+- `.env`：`DATABASE_URL="file:./dev.db"`
+- 生产：`npx prisma migrate deploy && npx prisma db seed`（按需）后再 `npm run build`。  
+  Run migrations/seeds as needed before building for production.
