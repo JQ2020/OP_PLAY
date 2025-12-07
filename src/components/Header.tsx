@@ -3,19 +3,14 @@
 import { Search, HelpCircle, Bell } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
 
 export function Header() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    setSearchQuery(searchParams.get("q") || "");
-  }, [searchParams]);
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      const searchQuery = e.currentTarget.value.trim();
       const params = new URLSearchParams(searchParams.toString());
       if (searchQuery) {
         params.set("q", searchQuery);
@@ -38,7 +33,7 @@ export function Header() {
                <path d="M12.7969 11.7906L16.3969 15.3906L5.87812 21.05C4.95937 21.5656 4.11562 21.5094 3.60938 20.9781L12.7969 11.7906Z" fill="#F44336"/>
              </svg>
            </div>
-           <span className="hidden text-[22px] text-[#5f6368] sm:block">Google Play</span>
+           <span className="hidden text-[22px] text-[#5f6368] sm:block">OPPO Play</span>
         </Link>
       </div>
 
@@ -46,11 +41,11 @@ export function Header() {
          <div className="flex w-full max-w-[720px] items-center gap-3 rounded-full bg-[#f1f3f4] px-4 py-3 transition-shadow focus-within:shadow-md">
             <Search className="h-5 w-5 text-[#5f6368]" />
             <input
+              key={searchParams.get("q") || ""}
               type="text"
               placeholder="Search"
               className="w-full bg-transparent text-base outline-none placeholder:text-[#5f6368]"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              defaultValue={searchParams.get("q") || ""}
               onKeyDown={handleSearch}
             />
          </div>

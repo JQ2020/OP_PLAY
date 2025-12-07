@@ -14,13 +14,37 @@ datasource db {
 }
 
 model App {
-  id          String  @id @default(uuid())
-  title       String  @unique
+  id          String       @id @default(uuid())
+  title       String       @unique
   developer   String
   iconUrl     String
   description String
   rating      Float
   downloads   String
   category    String
-  isInstalled Boolean @default(false)
+  isInstalled Boolean      @default(false)
+  size        String       @default("50 MB")
+  version     String       @default("1.0.0")
+  updatedAt   DateTime     @default(now())
+  releaseDate DateTime     @default(now())
+  reviews     Review[]
+  screenshots Screenshot[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userName  String
+  userImage String?
+  rating    Int
+  content   String
+  createdAt DateTime @default(now())
+  appId     String
+  app       App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+}
+
+model Screenshot {
+  id    String @id @default(uuid())
+  url   String
+  appId String
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
 }
