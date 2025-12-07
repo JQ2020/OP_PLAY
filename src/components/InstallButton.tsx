@@ -30,14 +30,14 @@ export function InstallButton({ appId, isInstalled = false }: InstallButtonProps
   const isLoading = status === "pending" || isPending;
 
   const base =
-    "inline-flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 border";
+    "inline-flex w-full min-w-[140px] items-center justify-center gap-2 rounded-lg px-6 py-2.5 text-sm font-medium transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
 
   const variants: Record<typeof status, string> = {
-    idle: "bg-primary text-white border-transparent shadow-card hover:bg-primary/90 focus-visible:outline-primary",
+    idle: "bg-primary text-white shadow-sm hover:shadow-md hover:bg-primary/90 focus-visible:outline-primary",
     pending:
-      "bg-primary text-white border-transparent shadow-card hover:bg-primary/90 focus-visible:outline-primary",
+      "bg-primary text-white shadow-sm hover:shadow-md hover:bg-primary/90 focus-visible:outline-primary",
     installed:
-      "bg-transparent text-primary border border-primary hover:bg-primary/5 focus-visible:outline-primary",
+      "border border-border-light bg-surface-variant text-ink hover:bg-border-light focus-visible:outline-ink",
   };
 
   const label = status === "installed" ? "Open" : status === "pending" ? "Pending..." : "Install";

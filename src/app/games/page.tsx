@@ -67,22 +67,22 @@ export default async function GamesPage({ searchParams }: Props) {
   };
 
   return (
-    <main className="flex min-h-screen bg-surface text-ink">
+    <main className="flex min-h-screen bg-white">
       <Sidebar activeKey="games" />
 
-      <section className="flex flex-1 flex-col gap-6 px-8 py-8">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="text-2xl font-semibold text-ink">Games</h1>
+      <section className="flex flex-1 flex-col gap-6 px-6 py-6 lg:px-10 lg:py-8">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-3xl font-normal text-ink">Games</h1>
             <form
-              className="flex w-full items-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-3 text-sm text-muted shadow-sm sm:w-96"
+              className="flex w-full items-center gap-3 rounded-lg border border-border-light bg-surface-variant px-5 py-2.5 text-sm sm:w-96"
               action="/games"
             >
-              <Search className="h-4 w-4 text-muted" strokeWidth={0} fill="currentColor" />
+              <Search className="h-5 w-5 text-ink-secondary" />
               <input
                 type="text"
                 placeholder="Search for games"
-                className="w-full bg-transparent text-ink outline-none placeholder:text-muted"
+                className="w-full bg-transparent text-ink outline-none placeholder:text-ink-secondary"
                 name="q"
                 defaultValue={q}
               />
@@ -94,10 +94,10 @@ export default async function GamesPage({ searchParams }: Props) {
               <Link
                 key={chip.key}
                 href={buildHref(chip.key)}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                className={`rounded-lg border px-5 py-2 text-sm font-medium transition-all ${
                   view === chip.key
-                    ? "border-primary bg-primary text-white shadow-card"
-                    : "border-gray-200 bg-white text-muted hover:bg-gray-50"
+                    ? "border-primary-blue bg-[#e3f2fd] text-primary-blue shadow-sm"
+                    : "border-border bg-white text-ink-secondary hover:bg-surface-variant"
                 }`}
               >
                 {chip.label}
@@ -106,7 +106,7 @@ export default async function GamesPage({ searchParams }: Props) {
             {q && (
               <Link
                 href="/games"
-                className="rounded-full border border-gray-200 px-4 py-2 text-sm text-muted hover:bg-gray-50"
+                className="rounded-lg border border-border bg-white px-5 py-2 text-sm font-medium text-ink-secondary hover:bg-surface-variant"
               >
                 Clear
               </Link>
@@ -114,7 +114,7 @@ export default async function GamesPage({ searchParams }: Props) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-muted">
+        <div className="flex items-center justify-between text-sm text-ink-secondary">
           <span>
             {visible.length} game{visible.length === 1 ? "" : "s"}
             {view !== "for-you" && ` · ${viewChips.find((c) => c.key === view)?.description}`}
@@ -129,7 +129,7 @@ export default async function GamesPage({ searchParams }: Props) {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {visible.map((app) => (
               <AppCard key={app.id} app={app} />
             ))}

@@ -15,8 +15,8 @@ export function Sidebar({ activeKey }: { activeKey?: string }) {
   const current = activeKey ?? pathname?.split("/")[1] ?? "apps";
 
   return (
-    <aside className="hidden w-[256px] flex-col gap-2 overflow-y-auto py-2 pl-4 lg:flex">
-      <nav className="flex flex-col gap-1">
+    <aside className="hidden w-64 flex-col gap-1 overflow-y-auto border-r border-border-light bg-white py-2 lg:flex">
+      <nav className="flex flex-col">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = current === item.key || pathname === item.href;
@@ -24,17 +24,19 @@ export function Sidebar({ activeKey }: { activeKey?: string }) {
             <Link
               key={item.key}
               href={item.href}
-              className={`flex items-center gap-4 rounded-l-full px-6 py-3 text-sm font-medium transition-colors hover:bg-gray-50 ${
+              className={`group relative mx-3 flex items-center gap-5 rounded-full px-6 py-3 text-sm font-medium transition-all ${
                 isActive
-                  ? "bg-[#e8f0fe] text-[#01875f] hover:bg-[#e8f0fe]"
-                  : "text-[#5f6368]"
+                  ? "bg-[#e3f2fd] text-primary-blue"
+                  : "text-ink-secondary hover:bg-surface-variant"
               }`}
             >
               <Icon
-                className={`h-6 w-6 ${isActive ? "fill-[#01875f]" : ""}`}
-                strokeWidth={isActive ? 2 : 2}
+                className={`h-6 w-6 transition-colors ${
+                  isActive ? "text-primary-blue" : "text-ink-secondary group-hover:text-ink"
+                }`}
+                strokeWidth={2}
               />
-              <span className="text-[15px]">{item.label}</span>
+              <span className="text-sm font-medium">{item.label}</span>
             </Link>
           );
         })}

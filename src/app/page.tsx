@@ -99,37 +99,37 @@ export default async function Home({ searchParams }: Props) {
     );
 
     content = (
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-medium text-[#202124]">
+            <h2 className="text-xl font-normal text-ink">
               Results for &ldquo;{searchTerm}&rdquo;
               {categoryFilter ? ` · ${categoryFilter}` : ""}
             </h2>
-            <p className="text-sm text-[#5f6368]">
+            <p className="mt-1 text-sm text-ink-secondary">
               Showing matches across titles, developers, and categories.
             </p>
           </div>
           {categoryFilter && (
             <Link
               href="/"
-              className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-[#5f6368] hover:bg-gray-50"
+              className="rounded-full border border-border px-4 py-1.5 text-xs font-medium text-ink-secondary hover:bg-surface-variant"
             >
               Clear filter
             </Link>
           )}
         </div>
         {apps.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {apps.map((app) => (
               <AppCard key={app.id} app={app} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 py-12 text-[#5f6368]">
-            <p className="text-lg">No results found.</p>
-            <p className="text-sm">
-              Try adjusting your search terms or clearing filters.
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16 text-ink-secondary">
+            <p className="text-base font-medium">No results found</p>
+            <p className="mt-1 text-sm">
+              Try adjusting your search terms or clearing filters
             </p>
           </div>
         )}
@@ -152,13 +152,13 @@ export default async function Home({ searchParams }: Props) {
 
     content = (
       <section className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-lg font-medium text-[#202124]">
+            <h2 className="text-xl font-normal text-ink">
               Top charts
               {categoryFilter ? ` · ${categoryFilter}` : ""}
             </h2>
-            <p className="text-sm text-[#5f6368]">
+            <p className="mt-1 text-sm text-ink-secondary">
               Tap a pill to switch between downloads, ratings, or fresh updates.
             </p>
           </div>
@@ -167,10 +167,10 @@ export default async function Home({ searchParams }: Props) {
               <Link
                 key={option.key}
                 href={buildSortHref(option.key)}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-lg border px-5 py-2 text-sm font-medium transition-all ${
                   sortParam === option.key
-                    ? "border-[#01875f] bg-[#e8f0fe] text-[#01875f]"
-                    : "border-[#dadce0] bg-white text-[#5f6368] hover:bg-gray-50"
+                    ? "border-primary-blue bg-[#e3f2fd] text-primary-blue shadow-sm"
+                    : "border-border bg-white text-ink-secondary hover:bg-surface-variant"
                 }`}
               >
                 {option.label}
@@ -179,17 +179,17 @@ export default async function Home({ searchParams }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {sortedCharts.map((app, index) => (
             <Link
               key={app.id}
               href={`/app/${app.id}`}
-              className="group flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition-shadow hover:shadow-card"
+              className="group flex items-center gap-4 rounded-xl border border-border-light bg-white p-4 transition-all hover:shadow-md"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-[#5f6368]">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center text-sm font-medium text-ink-secondary">
                 {index + 1}
               </div>
-              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl shadow-sm">
+              <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-2xl border border-border-light shadow-sm">
                 <Image
                   src={app.iconUrl}
                   alt={`${app.title} icon`}
@@ -197,18 +197,18 @@ export default async function Home({ searchParams }: Props) {
                   className="object-cover"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-1">
-                <span className="text-sm font-medium text-[#202124] group-hover:underline">
+              <div className="flex flex-1 flex-col gap-0.5">
+                <span className="text-sm font-normal text-ink">
                   {app.title}
                 </span>
-                <span className="text-xs text-[#5f6368]">{app.developer}</span>
-                <div className="flex items-center gap-2 text-xs text-[#5f6368]">
+                <span className="text-xs text-ink-secondary">{app.developer}</span>
+                <div className="flex items-center gap-1.5 text-xs text-ink-secondary">
                   <span>{app.rating.toFixed(1)}</span>
                   <StarRating rating={app.rating} size={12} className="!gap-0" />
-                  <span className="text-gray-400">· {app.downloads} installs</span>
+                  <span className="text-ink-tertiary">· {app.downloads}</span>
                 </div>
               </div>
-              <ArrowRight size={18} className="text-gray-400" />
+              <ArrowRight size={20} className="text-ink-tertiary" />
             </Link>
           ))}
         </div>
@@ -223,37 +223,37 @@ export default async function Home({ searchParams }: Props) {
       <section className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-medium text-[#202124]">
+            <h2 className="text-xl font-normal text-ink">
               Browse by category
             </h2>
-            <p className="text-sm text-[#5f6368]">
-              Jump into a shelf and we’ll tailor the feed around it.
+            <p className="mt-1 text-sm text-ink-secondary">
+              Jump into a shelf and we'll tailor the feed around it.
             </p>
           </div>
           <Link
             href="/?section=for-you"
-            className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-[#01875f] hover:bg-green-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-primary hover:bg-surface-variant"
           >
             <Sparkles size={16} />
             Back to picks
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((item) => (
             <Link
               key={item.name}
               href={`/?category=${encodeURIComponent(item.name)}`}
-              className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-[#01875f] hover:shadow-card"
+              className="flex items-center gap-4 rounded-xl border border-border-light bg-white p-4 transition-all hover:border-primary-blue hover:shadow-md"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e8f0fe] text-[#01875f]">
-                <LayoutGrid size={18} />
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e3f2fd] text-primary-blue">
+                <LayoutGrid size={20} />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-semibold text-[#202124]">
+                <span className="text-sm font-medium text-ink">
                   {item.name}
                 </span>
-                <span className="text-xs text-[#5f6368]">
+                <span className="text-xs text-ink-secondary">
                   {item.count} apps
                 </span>
               </div>
@@ -271,22 +271,22 @@ export default async function Home({ searchParams }: Props) {
       <section className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-medium text-[#202124]">
-              Editors’ Choice
+            <h2 className="text-xl font-normal text-ink">
+              Editors' Choice
             </h2>
-            <p className="text-sm text-[#5f6368]">
+            <p className="mt-1 text-sm text-ink-secondary">
               Premium picks with stellar reviews and steady updates.
             </p>
           </div>
           <Link
             href="/?section=top-charts&sort=rating"
-            className="flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-sm font-medium text-[#01875f] hover:bg-green-50"
+            className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-primary hover:bg-surface-variant"
           >
             <TrendingUp size={16} />
             View charts
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {editorsChoice.map((app) => (
             <AppCard key={app.id} app={app} />
           ))}
@@ -306,23 +306,23 @@ export default async function Home({ searchParams }: Props) {
       .slice(0, 6);
 
     content = (
-      <div className="flex flex-col gap-8">
-        <section className="rounded-3xl bg-gradient-to-r from-[#e8f0fe] via-white to-[#e6f4ea] p-6 shadow-sm">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-3">
-              <Sparkles className="h-5 w-5 text-[#01875f]" />
+      <div className="flex flex-col gap-10">
+        <section className="rounded-2xl bg-gradient-to-r from-[#e3f2fd] via-white to-[#e8f5e9] p-8 shadow-sm">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-4">
+              <Sparkles className="h-6 w-6 text-primary" />
               <div>
-                <p className="text-sm font-medium text-[#5f6368]">
+                <p className="text-sm font-medium text-ink-secondary">
                   Hand picked for you
                 </p>
-                <h2 className="text-xl font-semibold text-[#202124]">
-                  Discover apps you’ll actually use
+                <h2 className="text-2xl font-normal text-ink">
+                  Discover apps you'll actually use
                 </h2>
               </div>
             </div>
             <Link
               href="/?section=top-charts"
-              className="inline-flex items-center gap-2 rounded-full border border-[#01875f] px-4 py-2 text-sm font-medium text-[#01875f] hover:bg-green-50"
+              className="inline-flex items-center gap-2 rounded-lg border border-primary px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-surface-variant"
             >
               Browse charts
               <ArrowRight size={16} />
@@ -331,19 +331,19 @@ export default async function Home({ searchParams }: Props) {
         </section>
 
         <section>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-medium text-[#202124]">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-xl font-normal text-ink">
               Recommended for you
               {categoryFilter ? ` · ${categoryFilter}` : ""}
             </h2>
             <Link
               href="/?section=top-charts&sort=downloads"
-              className="rounded-full p-2 hover:bg-gray-100"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface-variant"
             >
-              <ArrowRight size={20} className="text-gray-500" />
+              <ArrowRight size={20} className="text-ink-secondary" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {recommendedApps.map((app) => (
               <AppCard key={app.id} app={app} />
             ))}
@@ -351,16 +351,16 @@ export default async function Home({ searchParams }: Props) {
         </section>
 
         <section>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-medium text-[#202124]">Top rated</h2>
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-xl font-normal text-ink">Top rated</h2>
             <Link
               href="/?section=top-charts&sort=rating"
-              className="rounded-full p-2 hover:bg-gray-100"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface-variant"
             >
-              <ArrowRight size={20} className="text-gray-500" />
+              <ArrowRight size={20} className="text-ink-secondary" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {topRatedApps.map((app) => (
               <AppCard key={app.id} app={app} />
             ))}
@@ -368,16 +368,16 @@ export default async function Home({ searchParams }: Props) {
         </section>
 
         <section>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-medium text-[#202124]">New & updated</h2>
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-xl font-normal text-ink">New & updated</h2>
             <Link
               href="/?section=top-charts&sort=recent"
-              className="rounded-full p-2 hover:bg-gray-100"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface-variant"
             >
-              <ArrowRight size={20} className="text-gray-500" />
+              <ArrowRight size={20} className="text-ink-secondary" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {newApps.map((app) => (
               <AppCard key={app.id} app={app} />
             ))}
@@ -386,19 +386,19 @@ export default async function Home({ searchParams }: Props) {
 
         {gamesSpotlight.length > 0 && (
           <section>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-lg font-medium text-[#202124]">
-                <Gamepad2 className="h-5 w-5 text-[#01875f]" />
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="flex items-center gap-3 text-xl font-normal text-ink">
+                <Gamepad2 className="h-6 w-6 text-primary" />
                 Games spotlight
               </h2>
               <Link
                 href="/games?sort=top"
-                className="rounded-full p-2 hover:bg-gray-100"
+                className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface-variant"
               >
-                <ArrowRight size={20} className="text-gray-500" />
+                <ArrowRight size={20} className="text-ink-secondary" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {gamesSpotlight.map((app) => (
                 <AppCard key={app.id} app={app} />
               ))}
@@ -414,17 +414,17 @@ export default async function Home({ searchParams }: Props) {
       <Header />
       <div className="flex flex-1">
         <Sidebar activeKey="apps" />
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="mx-auto flex max-w-[1200px] flex-col gap-8">
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+        <main className="flex-1 overflow-y-auto bg-white px-6 py-6 lg:px-10 lg:py-8">
+          <div className="mx-auto flex max-w-[1400px] flex-col gap-6">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
               {sectionChips.map((chip) => (
                 <Link
                   key={chip.key}
                   href={chip.href ?? buildSectionHref(chip.key)}
-                  className={`whitespace-nowrap rounded-lg border px-4 py-1.5 text-sm font-medium transition-colors ${
+                  className={`whitespace-nowrap rounded-lg border px-5 py-2 text-sm font-medium transition-all ${
                     activeSection === chip.key
-                      ? "border-[#01875f] bg-[#e8f0fe] text-[#01875f]"
-                      : "border-[#dadce0] bg-white text-[#5f6368] hover:bg-gray-50"
+                      ? "border-primary-blue bg-[#e3f2fd] text-primary-blue shadow-sm"
+                      : "border-border bg-white text-ink-secondary hover:bg-surface-variant"
                   }`}
                 >
                   {chip.label}
@@ -438,10 +438,10 @@ export default async function Home({ searchParams }: Props) {
                   <Link
                     key={item}
                     href={`/?category=${encodeURIComponent(item)}`}
-                    className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+                    className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-all ${
                       categoryFilter === item
-                        ? "border-[#01875f] bg-[#e8f0fe] text-[#01875f]"
-                        : "border-gray-200 bg-white text-[#5f6368] hover:bg-gray-50"
+                        ? "border-primary-blue bg-[#e3f2fd] text-primary-blue"
+                        : "border-border-light bg-white text-ink-secondary hover:bg-surface-variant"
                     }`}
                   >
                     {item}
@@ -451,7 +451,7 @@ export default async function Home({ searchParams }: Props) {
               {categoryFilter && (
                 <Link
                   href="/"
-                  className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-[#5f6368] hover:bg-gray-50"
+                  className="rounded-full border border-border-light px-4 py-1.5 text-xs font-medium text-ink-secondary hover:bg-surface-variant"
                 >
                   Clear
                 </Link>

@@ -2,21 +2,49 @@
 
 @theme inline {
   --color-primary: #01875f;
+  --color-primary-blue: #1a73e8;
   --color-background: #ffffff;
-  --color-surface: #f6f8fc;
+  --color-surface: #ffffff;
+  --color-surface-variant: #f8f9fa;
   --color-surface-container: #ffffff;
-  --color-ink: #202124;
+  --color-ink: rgba(0, 0, 0, 0.87);
+  --color-ink-secondary: rgba(0, 0, 0, 0.54);
+  --color-ink-tertiary: rgba(0, 0, 0, 0.38);
   --color-muted: #5f6368;
+  --color-border: #dadce0;
+  --color-border-light: #e8eaed;
+  --color-divider: rgba(0, 0, 0, 0.12);
   --shadow-card: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
     0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+  --shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3),
+    0 4px 8px 3px rgba(60, 64, 67, 0.15);
 }
 
 @layer base {
   body {
     @apply bg-surface text-ink;
+    font-family: Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   a {
     @apply text-primary;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
