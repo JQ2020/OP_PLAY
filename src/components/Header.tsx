@@ -3,6 +3,7 @@
 import { Search, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-border-light bg-white px-6">
+    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-border-light bg-white dark:bg-surface px-6 transition-colors">
       <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
           <div className="relative h-10 w-10 flex-shrink-0">
@@ -39,7 +40,7 @@ export function Header() {
 
       <div className="mx-4 flex flex-1 items-center justify-center">
         <div className="group relative w-full max-w-[720px]">
-          <div className="flex items-center gap-4 rounded-lg bg-surface-variant px-6 py-2.5 transition-all focus-within:bg-white focus-within:shadow-md">
+          <div className="flex items-center gap-4 rounded-lg bg-surface-variant px-6 py-2.5 transition-all focus-within:bg-white dark:focus-within:bg-black focus-within:shadow-md">
             <Search className="h-5 w-5 flex-shrink-0 text-ink-secondary" />
             <input
               key={searchParams.get("q") || ""}
@@ -54,6 +55,7 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         <button
           className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface-variant"
           aria-label="Help"

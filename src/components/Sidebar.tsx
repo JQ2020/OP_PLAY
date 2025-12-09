@@ -15,7 +15,7 @@ export function Sidebar({ activeKey }: { activeKey?: string }) {
   const current = activeKey ?? pathname?.split("/")[1] ?? "apps";
 
   return (
-    <aside className="hidden w-64 flex-col gap-1 overflow-y-auto border-r border-border-light bg-white py-2 lg:flex">
+    <aside className="hidden w-64 flex-col gap-1 overflow-y-auto border-r border-border-light bg-white dark:bg-surface py-2 lg:flex transition-colors">
       <nav className="flex flex-col">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -26,8 +26,8 @@ export function Sidebar({ activeKey }: { activeKey?: string }) {
               href={item.href}
               className={`group relative mx-3 flex items-center gap-5 rounded-full px-6 py-3 text-sm font-medium transition-all ${
                 isActive
-                  ? "bg-[#e3f2fd] text-primary-blue"
-                  : "text-ink-secondary hover:bg-surface-variant"
+                  ? "bg-[#e3f2fd] text-primary-blue dark:bg-primary-blue/20 dark:text-blue-300"
+                  : "text-ink-secondary hover:bg-surface-variant hover:text-ink"
               }`}
             >
               <Icon

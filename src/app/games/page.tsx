@@ -67,7 +67,7 @@ export default async function GamesPage({ searchParams }: Props) {
   };
 
   return (
-    <main className="flex min-h-screen bg-white">
+    <main className="flex min-h-screen bg-white dark:bg-background transition-colors">
       <Sidebar activeKey="games" />
 
       <section className="flex flex-1 flex-col gap-6 px-6 py-6 lg:px-10 lg:py-8">
@@ -96,8 +96,8 @@ export default async function GamesPage({ searchParams }: Props) {
                 href={buildHref(chip.key)}
                 className={`rounded-lg border px-5 py-2 text-sm font-medium transition-all ${
                   view === chip.key
-                    ? "border-primary-blue bg-[#e3f2fd] text-primary-blue shadow-sm"
-                    : "border-border bg-white text-ink-secondary hover:bg-surface-variant"
+                    ? "border-primary-blue bg-[#e3f2fd] text-primary-blue dark:bg-primary-blue/20 dark:text-blue-300 shadow-sm"
+                    : "border-border bg-white dark:bg-surface text-ink-secondary hover:bg-surface-variant"
                 }`}
               >
                 {chip.label}
@@ -106,7 +106,7 @@ export default async function GamesPage({ searchParams }: Props) {
             {q && (
               <Link
                 href="/games"
-                className="rounded-lg border border-border bg-white px-5 py-2 text-sm font-medium text-ink-secondary hover:bg-surface-variant"
+                className="rounded-lg border border-border bg-white dark:bg-surface px-5 py-2 text-sm font-medium text-ink-secondary hover:bg-surface-variant"
               >
                 Clear
               </Link>

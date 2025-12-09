@@ -48,7 +48,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
   });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-background transition-colors">
       <main className="mx-auto max-w-[1200px] pb-20">
         {/* Header Section */}
         <div className="flex flex-col gap-6 border-b border-border-light px-6 py-8 md:flex-row md:items-start md:gap-8">

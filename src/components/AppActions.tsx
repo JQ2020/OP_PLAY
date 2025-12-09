@@ -76,12 +76,12 @@ export function AppActions({ appTitle, developer }: AppActionsProps) {
           <span>More</span>
         </button>
         {isMenuOpen && (
-          <div className="absolute right-0 top-11 z-10 w-48 rounded-2xl border border-gray-200 bg-white p-2 shadow-card">
+          <div className="absolute right-0 top-11 z-10 w-48 rounded-2xl border border-gray-200 dark:border-border-light bg-white dark:bg-surface p-2 shadow-card">
             <a
               href="https://support.google.com/googleplay/answer/9037938"
               target="_blank"
               rel="noreferrer"
-              className="block rounded-lg px-3 py-2 text-sm text-[#202124] hover:bg-gray-50"
+              className="block rounded-lg px-3 py-2 text-sm text-[#202124] dark:text-ink hover:bg-gray-50 dark:hover:bg-surface-variant"
             >
               Data safety help
             </a>
@@ -89,7 +89,7 @@ export function AppActions({ appTitle, developer }: AppActionsProps) {
               href="https://support.google.com/googleplay/answer/4600002"
               target="_blank"
               rel="noreferrer"
-              className="block rounded-lg px-3 py-2 text-sm text-[#202124] hover:bg-gray-50"
+              className="block rounded-lg px-3 py-2 text-sm text-[#202124] dark:text-ink hover:bg-gray-50 dark:hover:bg-surface-variant"
             >
               Report an issue
             </a>
@@ -97,7 +97,7 @@ export function AppActions({ appTitle, developer }: AppActionsProps) {
               href="https://support.google.com/googleplay/workflow/9813244"
               target="_blank"
               rel="noreferrer"
-              className="block rounded-lg px-3 py-2 text-sm text-[#202124] hover:bg-gray-50"
+              className="block rounded-lg px-3 py-2 text-sm text-[#202124] dark:text-ink hover:bg-gray-50 dark:hover:bg-surface-variant"
             >
               Add to wishlist guide
             </a>

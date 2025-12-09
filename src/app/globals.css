@@ -1,50 +1,55 @@
 @import "tailwindcss";
 
+@plugin "tailwindcss-animate";
+
 @theme inline {
   --color-primary: #01875f;
   --color-primary-blue: #1a73e8;
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-variant: #f8f9fa;
-  --color-surface-container: #ffffff;
-  --color-ink: rgba(0, 0, 0, 0.87);
-  --color-ink-secondary: rgba(0, 0, 0, 0.54);
-  --color-ink-tertiary: rgba(0, 0, 0, 0.38);
-  --color-muted: #5f6368;
-  --color-border: #dadce0;
-  --color-border-light: #e8eaed;
-  --color-divider: rgba(0, 0, 0, 0.12);
+  
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-variant: var(--surface-variant);
+  
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-tertiary: var(--ink-tertiary);
+  
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  
   --shadow-card: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
     0 1px 3px 1px rgba(60, 64, 67, 0.15);
-  --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3);
-  --shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3),
-    0 4px 8px 3px rgba(60, 64, 67, 0.15);
 }
 
 @layer base {
+  :root {
+    /* Light Mode (Original) */
+    --background: #ffffff;
+    --surface: #ffffff;
+    --surface-variant: #f8f9fa;
+    --ink: rgba(0, 0, 0, 0.87);
+    --ink-secondary: rgba(0, 0, 0, 0.54);
+    --ink-tertiary: rgba(0, 0, 0, 0.38);
+    --border: #dadce0;
+    --border-light: #e8eaed;
+    --banner-background: linear-gradient(to right, #e3f2fd, #ffffff, #e8f5e9);
+  }
+
+  /* Dark Mode (Material Design Style) */
+  [data-theme="dark"] {
+    --background: #000000;         /* True Black for OLED */
+    --surface: #131314;            /* Dark Surface */
+    --surface-variant: #2d2e31;    /* Slightly lighter for inputs/hovers */
+    --ink: #e8eaed;                /* High emphasis text */
+    --ink-secondary: #9aa0a6;      /* Medium emphasis text */
+    --ink-tertiary: #5f6368;       /* Low emphasis text */
+    --border: #3c4043;
+    --border-light: #303134;       /* Subtle dark borders */
+    --banner-background: #202124;  /* Solid dark gray */
+  }
+
   body {
-    @apply bg-surface text-ink;
+    @apply bg-background text-ink transition-colors duration-300;
     font-family: Roboto, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  a {
-    @apply text-primary;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-}
-
-@layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
   }
 }

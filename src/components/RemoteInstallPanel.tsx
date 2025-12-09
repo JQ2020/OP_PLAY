@@ -176,7 +176,7 @@ export function RemoteInstallPanel({ appId, appTitle }: Props) {
 
       <div className="mt-5 grid gap-3 md:grid-cols-2">
         {devices.length === 0 ? (
-          <div className="col-span-2 flex items-center gap-3 rounded-xl border border-dashed border-border-light bg-white px-4 py-5 text-sm text-ink-secondary">
+          <div className="col-span-2 flex items-center gap-3 rounded-xl border border-dashed border-border-light bg-white dark:bg-surface px-4 py-5 text-sm text-ink-secondary">
             <WifiOff className="h-5 w-5 text-ink-tertiary" />
             还没有注册的设备。请在手机 App 登录同一账号后调用 /api/devices 注册，并保持长连接或推送 token。
           </div>
@@ -184,7 +184,7 @@ export function RemoteInstallPanel({ appId, appTitle }: Props) {
           devices.map((device) => (
             <div
               key={device.id}
-              className="flex items-center justify-between rounded-xl border border-border-light bg-white p-4 shadow-sm"
+              className="flex items-center justify-between rounded-xl border border-border-light bg-white dark:bg-surface p-4 shadow-sm"
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface">
@@ -245,7 +245,7 @@ export function RemoteInstallPanel({ appId, appTitle }: Props) {
             {recentTasks.map((task) => (
               <div
                 key={task.id}
-                className="flex items-center justify-between rounded-xl border border-border-light bg-white px-4 py-3"
+                className="flex items-center justify-between rounded-xl border border-border-light bg-white dark:bg-surface px-4 py-3"
               >
                 <div className="flex items-center gap-3">
                   <div className="relative h-10 w-10 overflow-hidden rounded-2xl border border-border-light bg-surface">

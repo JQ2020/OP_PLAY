@@ -169,8 +169,8 @@ export default async function Home({ searchParams }: Props) {
                 href={buildSortHref(option.key)}
                 className={`rounded-lg border px-5 py-2 text-sm font-medium transition-all ${
                   sortParam === option.key
-                    ? "border-primary-blue bg-[#e3f2fd] text-primary-blue shadow-sm"
-                    : "border-border bg-white text-ink-secondary hover:bg-surface-variant"
+                    ? "border-primary-blue bg-[#e3f2fd] text-primary-blue dark:bg-primary-blue/20 dark:text-blue-300 shadow-sm"
+                    : "border-border bg-white dark:bg-surface text-ink-secondary hover:bg-surface-variant"
                 }`}
               >
                 {option.label}
@@ -184,7 +184,7 @@ export default async function Home({ searchParams }: Props) {
             <Link
               key={app.id}
               href={`/app/${app.id}`}
-              className="group flex items-center gap-4 rounded-xl border border-border-light bg-white p-4 transition-all hover:shadow-md"
+              className="group flex items-center gap-4 rounded-xl border border-border-light bg-white dark:bg-surface p-4 transition-all hover:shadow-md"
             >
               <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center text-sm font-medium text-ink-secondary">
                 {index + 1}
@@ -244,7 +244,7 @@ export default async function Home({ searchParams }: Props) {
             <Link
               key={item.name}
               href={`/?category=${encodeURIComponent(item.name)}`}
-              className="flex items-center gap-4 rounded-xl border border-border-light bg-white p-4 transition-all hover:border-primary-blue hover:shadow-md"
+              className="flex items-center gap-4 rounded-xl border border-border-light bg-white dark:bg-surface p-4 transition-all hover:border-primary-blue hover:shadow-md"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e3f2fd] text-primary-blue">
                 <LayoutGrid size={20} />
@@ -307,7 +307,10 @@ export default async function Home({ searchParams }: Props) {
 
     content = (
       <div className="flex flex-col gap-10">
-        <section className="rounded-2xl bg-gradient-to-r from-[#e3f2fd] via-white to-[#e8f5e9] p-8 shadow-sm">
+        <section 
+          className="rounded-2xl p-8 shadow-sm transition-colors"
+          style={{ background: "var(--banner-background)" }}
+        >
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <Sparkles className="h-6 w-6 text-primary" />
@@ -410,11 +413,11 @@ export default async function Home({ searchParams }: Props) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-background transition-colors">
       <Header />
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar activeKey="apps" />
-        <main className="flex-1 overflow-y-auto bg-white px-6 py-6 lg:px-10 lg:py-8">
+        <main className="flex-1 overflow-y-auto bg-white dark:bg-background px-6 py-6 lg:px-10 lg:py-8 transition-colors">
           <div className="mx-auto flex max-w-[1400px] flex-col gap-6">
             <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
               {sectionChips.map((chip) => (
@@ -423,8 +426,8 @@ export default async function Home({ searchParams }: Props) {
                   href={chip.href ?? buildSectionHref(chip.key)}
                   className={`whitespace-nowrap rounded-lg border px-5 py-2 text-sm font-medium transition-all ${
                     activeSection === chip.key
-                      ? "border-primary-blue bg-[#e3f2fd] text-primary-blue shadow-sm"
-                      : "border-border bg-white text-ink-secondary hover:bg-surface-variant"
+                      ? "border-primary-blue bg-[#e3f2fd] text-primary-blue dark:bg-primary-blue/20 dark:text-blue-300 shadow-sm"
+                      : "border-border bg-white dark:bg-surface text-ink-secondary hover:bg-surface-variant"
                   }`}
                 >
                   {chip.label}
@@ -440,8 +443,8 @@ export default async function Home({ searchParams }: Props) {
                     href={`/?category=${encodeURIComponent(item)}`}
                     className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-all ${
                       categoryFilter === item
-                        ? "border-primary-blue bg-[#e3f2fd] text-primary-blue"
-                        : "border-border-light bg-white text-ink-secondary hover:bg-surface-variant"
+                        ? "border-primary-blue bg-[#e3f2fd] text-primary-blue dark:bg-primary-blue/20 dark:text-blue-300"
+                        : "border-border-light bg-white dark:bg-surface text-ink-secondary hover:bg-surface-variant"
                     }`}
                   >
                     {item}
