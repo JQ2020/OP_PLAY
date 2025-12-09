@@ -33,7 +33,7 @@ export function Header() {
               <path d="M12.7969 11.7906L16.3969 15.3906L5.87812 21.05C4.95937 21.5656 4.11562 21.5094 3.60938 20.9781L12.7969 11.7906Z" fill="#F44336"/>
             </svg>
           </div>
-          <span className="hidden text-[22px] font-normal tracking-tight text-muted lg:block">Google Play</span>
+          <span className="hidden text-[22px] font-normal tracking-tight text-muted lg:block">OPPO Play</span>
         </Link>
       </div>
 

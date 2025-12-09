@@ -461,10 +461,13 @@ const apps = [
 ];
 
 async function main() {
+  await prisma.remoteInstallTask.deleteMany();
+  await prisma.device.deleteMany();
   await prisma.review.deleteMany();
   await prisma.screenshot.deleteMany();
   await prisma.app.deleteMany();
 
+  const createdApps: Record<string, string> = {};
   for (const [index, app] of apps.entries()) {
     const { screenshots, ...appData } = app;
     const screenshotsToUse = screenshots?.length ? screenshots : [app.iconUrl];
@@ -488,7 +491,88 @@ async function main() {
         },
       },
     });
+    createdApps[app.title] = createdApp.id;
     console.log(`Created app with id: ${createdApp.id}`);
+  }
+
+  const devices = [
+    {
+      id: "oppo-find-x7",
+      name: "OPPO Find X7",
+      platform: "Android",
+      osVersion: "14",
+      appVersion: "1.0.0",
+      pushToken: "demo-find-x7",
+      isOnline: true,
+      lastSeen: new Date(),
+    },
+    {
+      id: "pixel-8-pro",
+      name: "Pixel 8 Pro",
+      platform: "Android",
+      osVersion: "14",
+      appVersion: "1.0.0",
+      pushToken: "demo-pixel-8",
+      isOnline: true,
+      lastSeen: new Date(Date.now() - 1000 * 60 * 15),
+    },
+    {
+      id: "ipad-air",
+      name: "iPad Air",
+      platform: "iOS",
+      osVersion: "17.3",
+      appVersion: "0.9.2",
+      pushToken: "demo-ipad",
+      isOnline: false,
+      lastSeen: new Date(Date.now() - 1000 * 60 * 60 * 6),
+    },
+  ];
+
+  for (const device of devices) {
+    await prisma.device.create({ data: device });
+  }
+
+  const installTasks = [
+    {
+      deviceId: "oppo-find-x7",
+      appTitle: "WhatsApp Messenger",
+      status: "SUCCESS",
+      progress: 100,
+      message: "Installed via local network delivery",
+    },
+    {
+      deviceId: "pixel-8-pro",
+      appTitle: "Instagram",
+      status: "DOWNLOADING",
+      progress: 65,
+      message: "Downloading package...",
+    },
+    {
+      deviceId: "ipad-air",
+      appTitle: "Spotify",
+      status: "QUEUED",
+      progress: 0,
+      message: "Waiting for device to come online",
+    },
+  ];
+
+  const buildDownloadUrl = (title: string) =>
+    `https://example.com/artifacts/${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.apk`;
+
+  for (const task of installTasks) {
+    const appId = createdApps[task.appTitle];
+    if (!appId) continue;
+    await prisma.remoteInstallTask.create({
+      data: {
+        appId,
+        deviceId: task.deviceId,
+        status: task.status,
+        progress: task.progress,
+        message: task.message,
+        downloadUrl: buildDownloadUrl(task.appTitle),
+        hash: "sha256-demo-hash",
+      },
+    });
   }
 }
 

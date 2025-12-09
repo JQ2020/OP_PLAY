@@ -10,6 +10,7 @@ import Link from "next/link";
 import { StarRating } from "@/components/StarRating";
 import { AppActions } from "@/components/AppActions";
 import { ExpandableText } from "@/components/ExpandableText";
+import { RemoteInstallPanel } from "@/components/RemoteInstallPanel";
 
 type AppPageProps = {
   params: Promise<{ id: string }>;
@@ -126,6 +127,11 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
             <span className="text-xs text-ink-secondary">Rated for 3+</span>
           </div>
         </div>
+
+        {/* Remote install */}
+        <section className="border-b border-border-light px-6 py-6" id="remote">
+          <RemoteInstallPanel appId={app.id} appTitle={app.title} />
+        </section>
 
         {/* Screenshots */}
         <section className="px-6 py-4" id="screenshots">

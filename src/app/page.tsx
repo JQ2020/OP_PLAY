@@ -227,7 +227,7 @@ export default async function Home({ searchParams }: Props) {
               Browse by category
             </h2>
             <p className="mt-1 text-sm text-ink-secondary">
-              Jump into a shelf and we'll tailor the feed around it.
+              Jump into a shelf and we&apos;ll tailor the feed around it.
             </p>
           </div>
           <Link
@@ -272,7 +272,7 @@ export default async function Home({ searchParams }: Props) {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-normal text-ink">
-              Editors' Choice
+              Editors&apos; Choice
             </h2>
             <p className="mt-1 text-sm text-ink-secondary">
               Premium picks with stellar reviews and steady updates.
@@ -316,7 +316,7 @@ export default async function Home({ searchParams }: Props) {
                   Hand picked for you
                 </p>
                 <h2 className="text-2xl font-normal text-ink">
-                  Discover apps you'll actually use
+                  Discover apps you&apos;ll actually use
                 </h2>
               </div>
             </div>

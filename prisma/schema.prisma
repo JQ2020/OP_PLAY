@@ -29,6 +29,7 @@ model App {
   releaseDate DateTime     @default(now())
   reviews     Review[]
   screenshots Screenshot[]
+  installTasks RemoteInstallTask[]
 }
 
 model Review {
@@ -47,4 +48,32 @@ model Screenshot {
   url   String
   appId String
   app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+}
+
+model Device {
+  id         String   @id
+  name       String
+  platform   String
+  osVersion  String?
+  appVersion String?
+  pushToken  String?
+  isOnline   Boolean  @default(true)
+  lastSeen   DateTime @default(now())
+  createdAt  DateTime @default(now())
+  installTasks RemoteInstallTask[]
+}
+
+model RemoteInstallTask {
+  id          String        @id @default(uuid())
+  appId       String
+  deviceId    String
+  status      String        @default("QUEUED")
+  progress    Int           @default(0)
+  message     String?
+  downloadUrl String?
+  hash        String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  app         App           @relation(fields: [appId], references: [id], onDelete: Cascade)
+  device      Device        @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 }
