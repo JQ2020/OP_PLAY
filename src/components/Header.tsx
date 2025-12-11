@@ -57,12 +57,15 @@ export function Header() {
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <button
-          className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface-variant"
+          className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-colors hover:bg-surface-variant active:scale-95"
           aria-label="Help"
         >
           <HelpCircle className="h-5 w-5 text-ink-secondary" />
         </button>
-        <button className="ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#ea4335] text-sm font-medium text-white transition-opacity hover:opacity-90">
+        <button
+          className="ml-2 flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-[#ea4335] text-sm font-medium text-white transition-opacity hover:opacity-90 active:scale-95"
+          aria-label="User account"
+        >
           A
         </button>
       </div>

@@ -83,11 +83,11 @@ export default function ThreeBackground() {
           <AnimatedParticles isDark={isDark} />
         </group>
 
-        <EffectComposer disableNormalPass>
-          <Bloom 
-            luminanceThreshold={isDark ? 0.5 : 2} 
-            mipmapBlur 
-            intensity={isDark ? 2.5 : 0.5} 
+        <EffectComposer enableNormalPass={false}>
+          <Bloom
+            luminanceThreshold={isDark ? 0.5 : 2}
+            mipmapBlur
+            intensity={isDark ? 2.5 : 0.5}
             radius={isDark ? 0.8 : 0.4}
           />
           <Noise opacity={isDark ? 0.05 : 0.01} />

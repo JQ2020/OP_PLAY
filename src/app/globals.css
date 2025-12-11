@@ -41,7 +41,7 @@
     --surface: #131314;            /* Dark Surface */
     --surface-variant: #2d2e31;    /* Slightly lighter for inputs/hovers */
     --ink: #e8eaed;                /* High emphasis text */
-    --ink-secondary: #9aa0a6;      /* Medium emphasis text */
+    --ink-secondary: #9aa0a6;      /* Medium emphasis text - improved contrast */
     --ink-tertiary: #5f6368;       /* Low emphasis text */
     --border: #3c4043;
     --border-light: #303134;       /* Subtle dark borders */
@@ -51,5 +51,54 @@
   body {
     @apply bg-background text-ink transition-colors duration-300;
     font-family: Roboto, Arial, sans-serif;
+  }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus visible states for accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary-blue ring-0;
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--surface-variant);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-tertiary);
+  }
+
+  [data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--ink-tertiary);
+  }
+
+  [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-secondary);
+  }
+
+  /* Hide scrollbar for certain elements while keeping functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

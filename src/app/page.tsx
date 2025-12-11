@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Gamepad2,
   LayoutGrid,
+  Search,
   Sparkles,
   TrendingUp,
 } from "lucide-react";
@@ -126,11 +127,20 @@ export default async function Home({ searchParams }: Props) {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16 text-ink-secondary">
-            <p className="text-base font-medium">No results found</p>
-            <p className="mt-1 text-sm">
-              Try adjusting your search terms or clearing filters
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-24 text-center">
+            <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-surface-variant">
+              <Search className="h-10 w-10 text-ink-tertiary" />
+            </div>
+            <p className="text-lg font-medium text-ink">No results found</p>
+            <p className="mt-2 max-w-md text-sm text-ink-secondary">
+              We couldn&apos;t find any apps matching &ldquo;{searchTerm}&rdquo;. Try different keywords or browse our categories.
             </p>
+            <Link
+              href="/?section=categories"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-primary/90"
+            >
+              Browse Categories
+            </Link>
           </div>
         )}
       </section>

@@ -17,10 +17,11 @@ const validStatuses = new Set<Status>(statusValues);
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
   const task = await prisma.remoteInstallTask.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       device: true,
       app: { select: { title: true, iconUrl: true } },
@@ -36,9 +37,10 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const { id } = await params;
     const payload = await req.json();
     const { status, progress, message, downloadUrl, hash } = payload ?? {};
 
@@ -73,7 +75,7 @@ export async function PATCH(
     }
 
     const existing = await prisma.remoteInstallTask.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existing) {
@@ -81,7 +83,7 @@ export async function PATCH(
     }
 
     const task = await prisma.remoteInstallTask.update({
-      where: { id: params.id },
+      where: { id },
       data: updates,
       include: {
         device: true,
