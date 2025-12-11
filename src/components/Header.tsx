@@ -40,7 +40,7 @@ export function Header() {
 
       <div className="mx-4 flex flex-1 items-center justify-center">
         <div className="group relative w-full max-w-[720px]">
-          <div className="flex items-center gap-4 rounded-lg bg-surface-variant px-6 py-2.5 transition-all focus-within:bg-white dark:focus-within:bg-black focus-within:shadow-md">
+          <div className="flex items-center gap-4 rounded-lg bg-surface-variant px-6 py-2.5 transition-all focus-within:bg-white focus-within:shadow-md dark:focus-within:bg-surface-variant">
             <Search className="h-5 w-5 flex-shrink-0 text-ink-secondary" />
             <input
               key={searchParams.get("q") || ""}
