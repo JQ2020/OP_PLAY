@@ -82,8 +82,6 @@ export const AppCard = memo(function AppCard({ app, index = 0 }: AppCardProps) {
                   priority={false}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 glass-effect" />
               </>
             )}
           </div>
