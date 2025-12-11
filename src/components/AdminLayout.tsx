@@ -48,7 +48,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <Link href="/admin" className="flex items-center gap-3">
             <div className="relative h-8 w-8 flex-shrink-0">
               <Image
-                src="/logo.png"
+                src="/oppo_market_icon.png"
                 alt="OPPO Play"
                 fill
                 className="object-contain"

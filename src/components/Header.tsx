@@ -29,7 +29,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
           <div className="relative h-10 w-10 flex-shrink-0">
             <Image
-              src="/logo.png"
+              src="/oppo_market_icon.png"
               alt="OPPO Play"
               fill
               className="object-contain"
