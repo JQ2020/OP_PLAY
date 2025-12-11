@@ -45,13 +45,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         {/* Sidebar Header */}
         <div className="flex h-16 items-center justify-between border-b border-border px-6">
           <Link href="/admin" className="flex items-center gap-3">
-            <div className="relative h-8 w-8 flex-shrink-0 rounded-lg bg-[#1DB954] flex items-center justify-center">
-              <svg viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
-                <path d="M 48 96 Q 96 144 144 96" stroke="#FFFFFF" strokeWidth="8" fill="none" strokeLinecap="round"/>
-                <circle cx="64" cy="64" r="20" fill="#FFFFFF"/>
-                <circle cx="128" cy="64" r="20" fill="#FFFFFF"/>
-                <circle cx="64" cy="128" r="20" fill="#FFFFFF"/>
-                <circle cx="128" cy="128" r="20" fill="#FFFFFF"/>
+            <div className="relative h-8 w-8 flex-shrink-0">
+              <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
+                <rect x="0" y="0" width="512" height="512" rx="100" fill="#1DB954"/>
+                <circle cx="130" cy="150" r="40" fill="#FFFFFF"/>
+                <circle cx="382" cy="150" r="40" fill="#FFFFFF"/>
+                <circle cx="130" cy="340" r="40" fill="#FFFFFF"/>
+                <circle cx="382" cy="340" r="40" fill="#FFFFFF"/>
+                <path d="M 150 300 Q 256 400 362 300" stroke="#FFFFFF" strokeWidth="35" fill="none" strokeLinecap="round"/>
               </svg>
             </div>
             <span className="text-lg font-medium text-ink">Admin Console</span>
