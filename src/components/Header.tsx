@@ -56,6 +56,12 @@ export function Header() {
 
       <div className="flex items-center gap-2">
         <ThemeToggle />
+        <Link
+          href="/admin"
+          className="hidden md:flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-ink-secondary transition-colors hover:bg-surface-variant"
+        >
+          Admin
+        </Link>
         <button
           className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-colors hover:bg-surface-variant active:scale-95"
           aria-label="Help"
