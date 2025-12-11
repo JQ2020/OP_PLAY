@@ -2,6 +2,7 @@ import { AppCard } from "@/components/AppCard";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { StarRating } from "@/components/StarRating";
+import { HeroBanner } from "@/components/HeroBanner";
 import { prisma } from "@/lib/prisma";
 import {
   ArrowRight,
@@ -122,8 +123,8 @@ export default async function Home({ searchParams }: Props) {
         </div>
         {apps.length > 0 ? (
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {apps.map((app) => (
-              <AppCard key={app.id} app={app} />
+            {apps.map((app, index) => (
+              <AppCard key={app.id} app={app} index={index} />
             ))}
           </div>
         ) : (
@@ -297,8 +298,8 @@ export default async function Home({ searchParams }: Props) {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {editorsChoice.map((app) => (
-            <AppCard key={app.id} app={app} />
+          {editorsChoice.map((app, index) => (
+            <AppCard key={app.id} app={app} index={index} />
           ))}
         </div>
       </section>
@@ -317,31 +318,7 @@ export default async function Home({ searchParams }: Props) {
 
     content = (
       <div className="flex flex-col gap-10">
-        <section 
-          className="rounded-2xl p-8 shadow-sm transition-colors"
-          style={{ background: "var(--banner-background)" }}
-        >
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-4">
-              <Sparkles className="h-6 w-6 text-primary" />
-              <div>
-                <p className="text-sm font-medium text-ink-secondary">
-                  Hand picked for you
-                </p>
-                <h2 className="text-2xl font-normal text-ink">
-                  Discover apps you&apos;ll actually use
-                </h2>
-              </div>
-            </div>
-            <Link
-              href="/?section=top-charts"
-              className="inline-flex items-center gap-2 rounded-lg border border-primary px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-surface-variant"
-            >
-              Browse charts
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </section>
+        <HeroBanner />
 
         <section>
           <div className="mb-5 flex items-center justify-between">
@@ -357,8 +334,8 @@ export default async function Home({ searchParams }: Props) {
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {recommendedApps.map((app) => (
-              <AppCard key={app.id} app={app} />
+            {recommendedApps.map((app, index) => (
+              <AppCard key={app.id} app={app} index={index} />
             ))}
           </div>
         </section>
@@ -374,8 +351,8 @@ export default async function Home({ searchParams }: Props) {
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {topRatedApps.map((app) => (
-              <AppCard key={app.id} app={app} />
+            {topRatedApps.map((app, index) => (
+              <AppCard key={app.id} app={app} index={index} />
             ))}
           </div>
         </section>
@@ -391,8 +368,8 @@ export default async function Home({ searchParams }: Props) {
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {newApps.map((app) => (
-              <AppCard key={app.id} app={app} />
+            {newApps.map((app, index) => (
+              <AppCard key={app.id} app={app} index={index} />
             ))}
           </div>
         </section>
@@ -412,8 +389,8 @@ export default async function Home({ searchParams }: Props) {
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-              {gamesSpotlight.map((app) => (
-                <AppCard key={app.id} app={app} />
+              {gamesSpotlight.map((app, index) => (
+                <AppCard key={app.id} app={app} index={index} />
               ))}
             </div>
           </section>
