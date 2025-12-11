@@ -1,47 +1,99 @@
-# Play Store Lite / 谷歌应用商店风格示例
+# OPPO Play - 应用商店 Web 应用
 
-Next.js 16 (App Router) + Tailwind v4 的 Google Play 风格示例，内置 Prisma + SQLite、本地图标数据，支持分类列表、详情页、模拟安装按钮、后台新增页面，并附带“远程安装”下发 API。  
-Google Play–style sample built with Next.js 16 (App Router) + Tailwind v4. Uses Prisma + SQLite with local seeded icons, includes category grids, detail pages, mock install button, admin add page, and a remote-install API.
+一个基于 Google Play Store 设计风格的现代化应用商店 Web 应用。采用 Next.js 16 (App Router) + Tailwind CSS v4 构建，支持应用浏览、搜索、详情查看、远程安装等完整功能。
 
-## 技术栈 / Tech Stack
-- Next.js 16 (App Router, TypeScript, Webpack)
-- Tailwind CSS v4（自定义 M3 调色板、圆角、阴影）
-- Prisma ORM + SQLite（`prisma/seed.ts` 本地种子数据）
-- lucide-react、clsx、tailwind-merge
+![OPPO Play](public/oppo_market_icon.png)
 
-## 开发 & 脚本 / Development Scripts
+## ✨ 功能特性
+
+- 🎨 **Google Play 设计风格**：完美还原 Material Design 3 设计规范
+- 📱 **响应式布局**：完美适配桌面端、平板和移动设备
+- 🌓 **暗色模式**：支持明暗主题切换，自动保存用户偏好
+- 🔍 **智能搜索**：实时搜索应用和开发者
+- 📊 **分类浏览**：Apps、Games、Kids 三大分类
+- 🚀 **远程安装**：支持向设备推送应用安装任务
+- 💼 **管理后台**：完整的应用、设备、任务管理系统
+- 🎭 **精美动画**：使用 Framer Motion 实现流畅的交互动画
+- 📦 **150+ 应用**：内置 150 个应用数据，图标采用 DiceBear API 生成
+
+## 📚 文档导航
+
+- **📖 [项目架构文档](docs/ARCHITECTURE.md)** - 了解技术栈、项目结构和设计理念
+- **🚀 [环境搭建与运行指南](docs/SETUP.md)** - 详细的安装、配置和使用教程
+- **🔌 [远程安装协议](docs/REMOTE_INSTALL.md)** - 设备对接和 API 接口文档
+
+## ⚡ 快速开始
+
+### 环境要求
+- Node.js ≥ 18.17.0
+- npm ≥ 9.0.0
+
+### 安装与运行
+
 ```bash
+# 1. 克隆项目
+git clone https://github.com/JQ2020/OP_PLAY.git
+cd play-store-lite
+
+# 2. 安装依赖
 npm install
-npx prisma db seed          # 生成本地数据 / seed local data
-npm run dev -- --hostname 127.0.0.1 --port 3000
-npm run build
+
+# 3. 初始化数据库
+npx prisma generate
+npx prisma db push
+npx prisma db seed
+
+# 4. 启动开发服务器
+npm run dev
+
+# 5. 浏览器访问
+# 本地: http://localhost:3000
+# 局域网: http://你的IP:3000
 ```
 
-## 功能概览 / Features
-- 首页 `/`、`/games`、`/kids`：服务端获取 Prisma 数据，Play Store 风格卡片网格、导航、搜索框与筛选 Chips。  
-  Category grids with server-fetched data and Play-style UI.
-- 详情页 `/app/[id]`：大图标、评分/下载/年龄、Data Safety 卡片；模拟安装按钮（客户端状态 + Server Action 更新 `isInstalled`）；新增“发送到你的设备”卡片，可向已注册设备下发远程安装指令。  
-  Detail page with large icon, rating/downloads, data safety card, mock install button, and a “Send to device” panel that creates remote install tasks.
-- 后台 `/admin/add`：表单创建新 App，写入数据库并跳转详情页。  
-  Admin add page to create apps and redirect to their detail view.
-- 本地图标与截图占位 `/public/icons/*`、`/public/placeholders/*`，避免外链失效。  
-  Local icons and placeholder screenshots to avoid broken external images.
+详细步骤请参考 **[环境搭建文档](docs/SETUP.md)**
 
-## 目录结构 / Structure
-- `src/app/page.tsx`、`/games/page.tsx`、`/kids/page.tsx`：分类列表 / category pages
-- `src/app/app/[id]/page.tsx`：详情页 / detail page
-- `src/components/AppCard.tsx`、`Sidebar.tsx`、`InstallButton.tsx`
-- `src/app/actions.ts`：Server Action（安装状态更新 / install state update）
-- `src/lib/prisma.ts`：Prisma 单例 / singleton
-- `prisma/schema.prisma`、`prisma/seed.ts`：模型与种子（本地图标与远程安装示例设备/任务）
-- `src/app/api/devices`、`src/app/api/install-requests`：设备注册与远程安装任务接口
-- `docs/REMOTE_INSTALL.md`：远程安装协议与对接说明
+## 🛠️ 技术栈
 
-## 远程安装对接
-- 详情页“发送到你的设备”会调用 `/api/install-requests` 创建任务，并展示最近状态。
-- 手机端对接、接口协议与时序详见 `docs/REMOTE_INSTALL.md`。
+- **Next.js 16** + **React 19** + **TypeScript 5**
+- **Tailwind CSS v4** + **Framer Motion**
+- **Prisma ORM** + **SQLite**
+- **lucide-react** + **next-themes**
 
-## 部署提示 / Deploy Notes
-- `.env`：`DATABASE_URL="file:./dev.db"`
-- 生产：`npx prisma migrate deploy && npx prisma db seed`（按需）后再 `npm run build`。  
-  Run migrations/seeds as needed before building for production.
+完整技术栈说明请参考 **[架构文档](docs/ARCHITECTURE.md)**
+
+## 📱 主要页面
+
+- **首页** `/` - Apps 分类
+- **游戏** `/games` - 游戏分类
+- **儿童** `/kids` - 儿童应用
+- **应用详情** `/app/[id]` - 详情页
+- **管理后台** `/admin` - Dashboard、应用管理、设备管理、任务管理
+
+## 📱 手机端访问
+
+```bash
+# 1. 获取电脑 IP
+ifconfig getifaddr en0  # macOS/Linux
+ipconfig               # Windows
+
+# 2. 手机浏览器访问
+http://你的IP地址:3000
+```
+
+详细说明：**[环境搭建文档 - 手机端访问](docs/SETUP.md#手机端访问)**
+
+## 🔧 开发脚本
+
+```bash
+npm run dev          # 开发模式
+npm run build        # 生产构建
+npm run start        # 生产服务器
+npx prisma studio    # 查看数据库
+```
+
+---
+
+**Built with ❤️ using Next.js, React, and Tailwind CSS**
+
+如有问题，请查看 [环境搭建文档](docs/SETUP.md) 或提交 [Issue](https://github.com/JQ2020/OP_PLAY/issues)
