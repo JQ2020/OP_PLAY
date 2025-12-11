@@ -4,6 +4,7 @@ import { Search, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
+import Image from "next/image";
 
 export function Header() {
   const router = useRouter();
@@ -27,14 +28,13 @@ export function Header() {
       <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
           <div className="relative h-10 w-10 flex-shrink-0">
-            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
-              <rect x="0" y="0" width="512" height="512" rx="100" fill="#1DB954"/>
-              <circle cx="130" cy="150" r="40" fill="#FFFFFF"/>
-              <circle cx="382" cy="150" r="40" fill="#FFFFFF"/>
-              <circle cx="130" cy="340" r="40" fill="#FFFFFF"/>
-              <circle cx="382" cy="340" r="40" fill="#FFFFFF"/>
-              <path d="M 150 300 Q 256 400 362 300" stroke="#FFFFFF" strokeWidth="35" fill="none" strokeLinecap="round"/>
-            </svg>
+            <Image
+              src="/logo.png"
+              alt="OPPO Play"
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
           <span className="hidden text-[22px] font-normal tracking-tight text-muted lg:block">OPPO Play</span>
         </Link>
