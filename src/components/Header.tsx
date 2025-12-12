@@ -25,7 +25,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-border-light bg-white dark:bg-surface px-6 transition-colors">
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-4 lg:gap-8">
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
           <div className="relative h-10 w-10 flex-shrink-0">
             <Image
@@ -40,8 +40,8 @@ export function Header() {
         </Link>
       </div>
 
-      <div className="mx-4 flex flex-1 items-center justify-center">
-        <div className="group relative w-full max-w-[720px]">
+      <div className="mx-2 flex flex-1 items-center justify-center md:mx-4">
+        <div className="group relative w-full max-w-[280px] sm:max-w-[400px] md:max-w-[720px]">
           <div className="flex items-center gap-4 rounded-lg bg-surface-variant px-6 py-2.5 transition-all focus-within:bg-white focus-within:shadow-md dark:focus-within:bg-surface-variant">
             <Search className="h-5 w-5 flex-shrink-0 text-ink-secondary" />
             <input
@@ -65,7 +65,7 @@ export function Header() {
           Admin
         </Link>
         <button
-          className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-colors hover:bg-surface-variant active:scale-95"
+          className="hidden md:flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-colors hover:bg-surface-variant active:scale-95"
           aria-label="Help"
         >
           <HelpCircle className="h-5 w-5 text-ink-secondary" />

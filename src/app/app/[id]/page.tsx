@@ -49,9 +49,9 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-background transition-colors">
-      <main className="mx-auto max-w-[1200px] pb-20">
+      <main className="mx-auto max-w-[1200px] pb-24">
         {/* Header Section */}
-        <div className="flex flex-col gap-6 border-b border-border-light px-6 py-8 md:flex-row md:items-start md:gap-8">
+        <div className="flex flex-col gap-6 border-b border-border-light px-4 py-6 md:px-6 md:py-8 md:flex-row md:items-start md:gap-8">
           {/* Icon */}
           <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-3xl border border-border-light shadow-sm">
             <Image
@@ -107,7 +107,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
         </div>
 
         {/* Mobile Stats (Scrollable) */}
-        <div className="flex items-center gap-8 overflow-x-auto border-b border-border-light px-6 py-4 scrollbar-hide md:hidden">
+        <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto border-b border-border-light px-4 py-4 scrollbar-hide md:hidden">
           <div className="flex min-w-[70px] flex-col items-center gap-1">
             <div className="flex items-center gap-1 text-sm font-normal text-ink">
               {app.rating.toFixed(1)} <StarRating rating={app.rating} size={12} className="!gap-0" />
@@ -129,17 +129,17 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
         </div>
 
         {/* Remote install */}
-        <section className="border-b border-border-light px-6 py-6" id="remote">
+        <section className="border-b border-border-light px-4 py-6 md:px-6" id="remote">
           <RemoteInstallPanel appId={app.id} appTitle={app.title} />
         </section>
 
         {/* Screenshots */}
-        <section className="px-6 py-4" id="screenshots">
+        <section className="px-4 py-4 md:px-6" id="screenshots">
           <ScreenshotCarousel screenshots={app.screenshots} title={app.title} />
         </section>
 
         {/* About this app */}
-        <section className="border-b border-border-light px-6 py-6" id="about">
+        <section className="border-b border-border-light px-4 py-6 md:px-6" id="about">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-normal text-ink">About this app</h2>
             <Link
@@ -165,7 +165,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
         </section>
 
         {/* Data Safety */}
-        <section className="border-b border-border-light px-6 py-6" id="data-safety">
+        <section className="border-b border-border-light px-4 py-6 md:px-6" id="data-safety">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-normal text-ink">Data safety</h2>
             <Link
@@ -200,7 +200,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
         </section>
 
         {/* Ratings & Reviews */}
-        <section className="border-b border-border-light px-6 py-6" id="reviews">
+        <section className="border-b border-border-light px-4 py-6 md:px-6" id="reviews">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-xl font-normal text-ink">Ratings and reviews</h2>
             <Link
@@ -229,7 +229,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
 
         {/* Similar Apps */}
         {similarApps.length > 0 && (
-          <section className="px-6 py-6">
+          <section className="px-4 py-6 md:px-6">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-xl font-normal text-ink">Similar apps</h2>
               <Link
