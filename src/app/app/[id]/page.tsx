@@ -137,7 +137,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
         </section>
 
         {/* Screenshots */}
-        <section className="px-4 py-4 md:px-6" id="screenshots">
+        <section className="py-4" id="screenshots">
           <ScreenshotCarousel screenshots={app.screenshots} title={app.title} />
         </section>
 
