@@ -19,15 +19,28 @@ export function HeroBanner({
   ctaHref = "/?section=top-charts"
 }: HeroBannerProps) {
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([]);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 20 }, (_, i) => ({
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    // Reduce to 8 particles instead of 20
+    const newParticles = Array.from({ length: 8 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      delay: Math.random() * 2,
+      delay: Math.random() * 1.5,
     }));
     setParticles(newParticles);
+
+    const handleMediaChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleMediaChange);
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
   }, []);
 
   return (
@@ -50,12 +63,12 @@ export function HeroBanner({
               left: `${particle.x}%`,
               top: `${particle.y}%`,
             }}
-            animate={{
+            animate={prefersReducedMotion ? { opacity: 0.5 } : {
               y: [0, -30, 0],
               opacity: [0, 1, 0],
               scale: [0, 1, 0],
             }}
-            transition={{
+            transition={prefersReducedMotion ? {} : {
               duration: 3,
               delay: particle.delay,
               repeat: Infinity,
@@ -73,11 +86,11 @@ export function HeroBanner({
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <motion.div
-            animate={{
+            animate={prefersReducedMotion ? {} : {
               rotate: [0, 10, -10, 0],
               scale: [1, 1.1, 1],
             }}
-            transition={{
+            transition={prefersReducedMotion ? {} : {
               duration: 2,
               repeat: Infinity,
               ease: "easeInOut",
