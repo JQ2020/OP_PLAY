@@ -1,21 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30; // ISR: revalidate every 30 seconds
 
 export async function GET() {
   try {
     const devices = await prisma.device.findMany({
       orderBy: { lastSeen: "desc" },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        platform: true,
+        osVersion: true,
+        appVersion: true,
+        isOnline: true,
+        lastSeen: true,
+        createdAt: true,
         installTasks: {
           orderBy: { createdAt: "desc" },
           take: 1,
+          select: {
+            id: true,
+            status: true,
+            progress: true,
+            message: true,
+            createdAt: true,
+            app: {
+              select: {
+                id: true,
+                title: true,
+                iconUrl: true,
+              },
+            },
+          },
         },
       },
     });
 
-    return NextResponse.json({ devices });
+    return NextResponse.json(
+      { devices },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=30, stale-while-revalidate=60",
+        },
+      }
+    );
   } catch (error) {
     console.error("Failed to fetch devices", error);
     return NextResponse.json(

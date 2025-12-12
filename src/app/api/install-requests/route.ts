@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// Keep as force-dynamic for real-time updates, but add cache headers
 export const dynamic = "force-dynamic";
 
 const statusValues = [
@@ -43,17 +44,43 @@ export async function GET(req: NextRequest) {
 
   const tasks = await prisma.remoteInstallTask.findMany({
     where,
-    include: {
-      device: true,
+    select: {
+      id: true,
+      status: true,
+      progress: true,
+      message: true,
+      downloadUrl: true,
+      createdAt: true,
+      updatedAt: true,
+      device: {
+        select: {
+          id: true,
+          name: true,
+          platform: true,
+          isOnline: true,
+        },
+      },
       app: {
-        select: { title: true, iconUrl: true },
+        select: {
+          id: true,
+          title: true,
+          iconUrl: true,
+          category: true,
+        },
       },
     },
     orderBy: { createdAt: "desc" },
     take,
   });
 
-  return NextResponse.json({ tasks });
+  return NextResponse.json(
+    { tasks },
+    {
+      headers: {
+        "Cache-Control": "private, max-age=5, stale-while-revalidate=10",
+      },
+    }
+  );
 }
 
 export async function POST(req: NextRequest) {
