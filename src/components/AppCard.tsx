@@ -4,7 +4,7 @@ import type { App } from "@prisma/client";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useRef, useState } from "react";
+import { memo, useRef, useState, useEffect } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { motion } from "framer-motion";
 
@@ -23,9 +23,20 @@ export const AppCard = memo(function AppCard({ app, index = 0 }: AppCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile devices and disable 3D effects
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (isMobile || !cardRef.current) return;
 
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -66,7 +77,10 @@ export const AppCard = memo(function AppCard({ app, index = 0 }: AppCardProps) {
           onMouseLeave={handleMouseLeave}
           className="relative aspect-square w-full overflow-hidden rounded-3xl border border-border-light shadow-sm transition-all duration-300 will-change-transform preserve-3d group-hover:shadow-glow shine-effect"
           style={{
-            transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${rotateX || rotateY ? 1.05 : 1})`,
+            // Only apply 3D transform on desktop
+            transform: isMobile
+              ? 'perspective(1000px) scale(1)'
+              : `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${rotateX || rotateY ? 1.05 : 1})`,
             transition: 'transform 0.1s ease-out, box-shadow 0.3s ease',
           }}
         >
