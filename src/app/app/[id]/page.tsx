@@ -30,6 +30,9 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
         orderBy: { createdAt: "desc" },
         take: showAllReviews ? 12 : 3,
       },
+      _count: {
+        select: { reviews: true }
+      }
     },
   });
 
@@ -37,7 +40,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
     notFound();
   }
 
-  const reviewCount = await prisma.review.count({ where: { appId: id } });
+  const reviewCount = app._count.reviews;
 
   const similarApps = await prisma.app.findMany({
     where: {
