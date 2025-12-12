@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import {
   AlertCircle,
   CheckCircle2,
@@ -70,6 +70,8 @@ export function RemoteInstallPanel({ appId, appTitle }: Props) {
   const [loadingDeviceId, setLoadingDeviceId] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const pollIntervalRef = useRef(8000);
 
   const loadDevices = useCallback(async () => {
     try {
@@ -91,9 +93,24 @@ export function RemoteInstallPanel({ appId, appTitle }: Props) {
       if (!res.ok) throw new Error("Failed to load tasks");
       const data = await res.json();
       setTasks(data.tasks ?? []);
+
+      // Exponential backoff: if no active tasks, increase polling interval
+      const activeTasks = (data.tasks ?? []).filter((t: RemoteInstallTask) =>
+        !['SUCCESS', 'FAILED', 'CANCELED'].includes(t.status)
+      );
+
+      if (activeTasks.length > 0) {
+        // Reset to base interval when active tasks exist
+        pollIntervalRef.current = 8000;
+      } else {
+        // Increase interval up to 15s when idle
+        pollIntervalRef.current = Math.min(pollIntervalRef.current * 1.2, 15000);
+      }
     } catch (err) {
       console.error(err);
       setError("无法获取安装任务，请稍后重试。");
+      // Increase backoff on error
+      pollIntervalRef.current = Math.min(pollIntervalRef.current * 1.5, 30000);
     }
   }, [appId]);
 
@@ -104,14 +121,33 @@ export function RemoteInstallPanel({ appId, appTitle }: Props) {
     setRefreshing(false);
   }, [loadDevices, loadTasks]);
 
+  // Monitor page visibility
+  useEffect(() => {
+    const handleVisibility = () => {
+      setIsVisible(!document.hidden);
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, []);
+
   useEffect(() => {
     refreshAll();
   }, [refreshAll]);
 
+  // Smart polling: pause when hidden, resume when visible
   useEffect(() => {
-    const interval = setInterval(loadTasks, 8000);
-    return () => clearInterval(interval);
-  }, [loadTasks]);
+    if (!isVisible) return; // Don't poll when tab is hidden
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const poll = async () => {
+      await loadTasks();
+      timeoutId = setTimeout(poll, pollIntervalRef.current);
+    };
+
+    poll();
+    return () => clearTimeout(timeoutId);
+  }, [isVisible, loadTasks]);
 
   const handleSend = async (deviceId: string) => {
     setLoadingDeviceId(deviceId);
