@@ -7,6 +7,7 @@ import {
   TrendingUp,
   Users,
   Activity,
+  Database,
 } from "lucide-react";
 
 async function getStats() {
@@ -118,6 +119,32 @@ export default async function AdminDashboard() {
   return (
     <AdminLayout>
       <div className="space-y-6">
+        {/* Database Management */}
+        <div className="rounded-xl border border-border bg-gradient-to-r from-blue-500/10 to-purple-500/10 p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="rounded-lg bg-blue-500/20 p-3">
+                <Database className="h-6 w-6 text-blue-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-ink">Database Management</h3>
+                <p className="text-sm text-ink-secondary">View and manage all data in Prisma Studio</p>
+              </div>
+            </div>
+            <a
+              href="http://localhost:5555"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-600 active:scale-95"
+            >
+              Open Database
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
         {/* Stats Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {statCards.map((stat) => {
