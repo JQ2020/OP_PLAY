@@ -60,7 +60,11 @@ export default async function Home({ searchParams }: Props) {
   const categoryFilter = typeof category === "string" ? category : undefined;
   const sortParam = typeof sort === "string" ? sort : "downloads";
 
-  const allApps = await prisma.app.findMany({ orderBy: { title: "asc" } });
+  // Limit to 24 apps for better performance (enough for all sections)
+  const allApps = await prisma.app.findMany({
+    orderBy: { title: "asc" },
+    take: 24
+  });
   const filteredApps = categoryFilter
     ? allApps.filter((app) => app.category === categoryFilter)
     : allApps;
