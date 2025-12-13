@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { calculateSimulatedProgress } from "@/lib/simulate-progress";
 
 export const dynamic = "force-dynamic";
 
@@ -24,12 +25,45 @@ export async function GET(
     where: { id },
     include: {
       device: true,
-      app: { select: { title: true, iconUrl: true } },
+      app: { select: { id: true, title: true, iconUrl: true } },
     },
   });
 
   if (!task) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  }
+
+  // 如果任务未完成，计算模拟进度
+  if (!["SUCCESS", "FAILED", "CANCELED"].includes(task.status)) {
+    const elapsedMs = Date.now() - new Date(task.createdAt).getTime();
+    const simulation = calculateSimulatedProgress(
+      elapsedMs,
+      task.simulateDuration,
+      task.fileSize
+    );
+
+    // 更新数据库
+    if (task.status !== simulation.status || task.progress !== simulation.progress) {
+      await prisma.remoteInstallTask.update({
+        where: { id: task.id },
+        data: {
+          status: simulation.status,
+          progress: simulation.progress,
+          message: simulation.message,
+          downloadSpeed: simulation.downloadSpeed || null,
+        },
+      });
+    }
+
+    return NextResponse.json({
+      task: {
+        ...task,
+        status: simulation.status,
+        progress: simulation.progress,
+        message: simulation.message,
+        downloadSpeed: simulation.downloadSpeed,
+      },
+    });
   }
 
   return NextResponse.json({ task });

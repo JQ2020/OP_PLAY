@@ -9,11 +9,34 @@ export async function GET(request: NextRequest) {
     const cursor = searchParams.get("cursor");
     const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 50);
     const category = searchParams.get("category");
+    const search = searchParams.get("search") || searchParams.get("q");
+    const sort = searchParams.get("sort"); // rating, downloads, title
 
-    const whereClause = category ? { category } : undefined;
+    // 构建查询条件
+    const whereClause: Record<string, unknown> = {};
+
+    if (category) {
+      whereClause.category = category;
+    }
+
+    if (search) {
+      whereClause.OR = [
+        { title: { contains: search } },
+        { developer: { contains: search } },
+        { description: { contains: search } },
+      ];
+    }
+
+    // 构建排序
+    let orderBy: Record<string, string> = { title: "asc" };
+    if (sort === "rating") {
+      orderBy = { rating: "desc" };
+    } else if (sort === "downloads") {
+      orderBy = { downloads: "desc" };
+    }
 
     const apps = await prisma.app.findMany({
-      where: whereClause,
+      where: Object.keys(whereClause).length > 0 ? whereClause : undefined,
       take: limit + 1,
       ...(cursor && { skip: 1, cursor: { id: cursor } }),
       select: {
@@ -24,9 +47,11 @@ export async function GET(request: NextRequest) {
         rating: true,
         downloads: true,
         category: true,
+        size: true,
+        version: true,
         updatedAt: true,
       },
-      orderBy: { title: "asc" },
+      orderBy,
     });
 
     const hasMore = apps.length > limit;

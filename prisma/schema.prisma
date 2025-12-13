@@ -64,22 +64,27 @@ model Device {
   isOnline   Boolean  @default(true)
   lastSeen   DateTime @default(now())
   createdAt  DateTime @default(now())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   installTasks RemoteInstallTask[]
 }
 
 model RemoteInstallTask {
-  id          String        @id @default(uuid())
-  appId       String
-  deviceId    String
-  status      String        @default("QUEUED")
-  progress    Int           @default(0)
-  message     String?
-  downloadUrl String?
-  hash        String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  app         App           @relation(fields: [appId], references: [id], onDelete: Cascade)
-  device      Device        @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  id               String   @id @default(uuid())
+  appId            String
+  deviceId         String
+  status           String   @default("QUEUED")
+  progress         Int      @default(0)
+  message          String?
+  downloadUrl      String?
+  hash             String?
+  simulateDuration Int      @default(10000)  // 模拟下载时长(ms)
+  fileSize         String   @default("45.2 MB")  // 模拟文件大小
+  downloadSpeed    String?  // 模拟下载速度
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  app              App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+  device           Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -93,6 +98,7 @@ model User {
   reviews   Review[]
   downloads DownloadHistory[]
   wishlist  Wishlist[]
+  devices   Device[]
 }
 
 model DownloadHistory {

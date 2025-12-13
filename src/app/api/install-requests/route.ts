@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  calculateSimulatedProgress,
+  generateSimulateDuration,
+  generateFileSize,
+} from "@/lib/simulate-progress";
 
 // Keep as force-dynamic for real-time updates, but add cache headers
 export const dynamic = "force-dynamic";
@@ -50,6 +55,9 @@ export async function GET(req: NextRequest) {
       progress: true,
       message: true,
       downloadUrl: true,
+      simulateDuration: true,
+      fileSize: true,
+      downloadSpeed: true,
       createdAt: true,
       updatedAt: true,
       device: {
@@ -73,11 +81,50 @@ export async function GET(req: NextRequest) {
     take,
   });
 
+  // 计算模拟进度并更新未完成的任务
+  const now = Date.now();
+  const processedTasks = await Promise.all(
+    tasks.map(async (task) => {
+      // 跳过已完成/失败/取消的任务
+      if (["SUCCESS", "FAILED", "CANCELED"].includes(task.status)) {
+        return task;
+      }
+
+      const elapsedMs = now - new Date(task.createdAt).getTime();
+      const simulation = calculateSimulatedProgress(
+        elapsedMs,
+        task.simulateDuration,
+        task.fileSize
+      );
+
+      // 如果状态或进度有变化，更新数据库
+      if (task.status !== simulation.status || task.progress !== simulation.progress) {
+        await prisma.remoteInstallTask.update({
+          where: { id: task.id },
+          data: {
+            status: simulation.status,
+            progress: simulation.progress,
+            message: simulation.message,
+            downloadSpeed: simulation.downloadSpeed || null,
+          },
+        });
+      }
+
+      return {
+        ...task,
+        status: simulation.status,
+        progress: simulation.progress,
+        message: simulation.message,
+        downloadSpeed: simulation.downloadSpeed,
+      };
+    })
+  );
+
   return NextResponse.json(
-    { tasks },
+    { tasks: processedTasks },
     {
       headers: {
-        "Cache-Control": "private, max-age=5, stale-while-revalidate=10",
+        "Cache-Control": "private, max-age=1, stale-while-revalidate=2",
       },
     }
   );
@@ -108,6 +155,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Device not found" }, { status: 404 });
     }
 
+    // Delete existing tasks for the same app on the same device (simulate reinstall/update)
+    await prisma.remoteInstallTask.deleteMany({
+      where: {
+        appId,
+        deviceId,
+      },
+    });
+
     const normalizedStatus =
       typeof status === "string" &&
       validStatuses.has(status.toUpperCase() as Status)
@@ -116,12 +171,18 @@ export async function POST(req: NextRequest) {
     const initialProgress =
       normalizedStatus === "SUCCESS" ? 100 : 0;
 
+    // 生成模拟参数
+    const simulateDuration = generateSimulateDuration();
+    const fileSize = app.size || generateFileSize();
+
     const task = await prisma.remoteInstallTask.create({
       data: {
         appId,
         deviceId,
         status: normalizedStatus,
         progress: initialProgress,
+        simulateDuration,
+        fileSize,
         downloadUrl:
           typeof downloadUrl === "string" && downloadUrl.length > 0
             ? downloadUrl
@@ -131,7 +192,7 @@ export async function POST(req: NextRequest) {
       include: {
         device: true,
         app: {
-          select: { title: true, iconUrl: true },
+          select: { id: true, title: true, iconUrl: true },
         },
       },
     });

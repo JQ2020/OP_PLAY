@@ -28,10 +28,14 @@ export type RemoteInstallTask = {
   message?: string | null;
   downloadUrl?: string | null;
   hash?: string | null;
+  simulateDuration: number;
+  fileSize: string;
+  downloadSpeed?: string | null;
   createdAt: string;
   updatedAt: string;
   device?: Device;
   app?: {
+    id?: string;
     title: string;
     iconUrl: string;
   };

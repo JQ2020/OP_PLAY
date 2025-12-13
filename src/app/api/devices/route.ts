@@ -3,9 +3,13 @@ import { prisma } from "@/lib/prisma";
 
 export const revalidate = 30; // ISR: revalidate every 30 seconds
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
+
     const devices = await prisma.device.findMany({
+      where: userId ? { userId } : undefined,
       orderBy: { lastSeen: "desc" },
       select: {
         id: true,
@@ -16,6 +20,14 @@ export async function GET() {
         isOnline: true,
         lastSeen: true,
         createdAt: true,
+        userId: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
         installTasks: {
           orderBy: { createdAt: "desc" },
           take: 1,
@@ -57,7 +69,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
-    const { id, name, platform, osVersion, appVersion, pushToken, isOnline } =
+    const { id, name, platform, osVersion, appVersion, pushToken, isOnline, userId } =
       payload ?? {};
 
     if (!id || !name || !platform) {
@@ -77,6 +89,7 @@ export async function POST(req: NextRequest) {
         pushToken,
         isOnline: isOnline ?? true,
         lastSeen: new Date(),
+        userId: userId ?? undefined,
       },
       create: {
         id,
@@ -86,6 +99,7 @@ export async function POST(req: NextRequest) {
         appVersion,
         pushToken,
         isOnline: isOnline ?? true,
+        userId: userId ?? null,
       },
     });
 
