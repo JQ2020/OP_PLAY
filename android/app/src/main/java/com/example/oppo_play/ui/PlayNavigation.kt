@@ -65,7 +65,8 @@ fun PlayAppNavHost() {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
-    val showBottomBar = bottomDestinations.any { currentRoute?.startsWith(it.route) == true }
+    val hideBottomBarRoutes = listOf("detail/{itemId}", "profile", "downloads", "category/{categoryName}")
+    val showBottomBar = currentRoute != null && currentRoute !in hideBottomBarRoutes
 
     LaunchedEffect(Unit) {
         installTaskViewModel.init(context)
@@ -147,6 +148,17 @@ fun PlayAppNavHost() {
                     DownloadsScreen(
                         navController = navController,
                         installTaskViewModel = installTaskViewModel
+                    )
+                }
+                composable(
+                    route = "category/{categoryName}",
+                    arguments = listOf(navArgument("categoryName") { defaultValue = "" })
+                ) { entry ->
+                    val categoryName = entry.arguments?.getString("categoryName") ?: ""
+                    CategoryScreen(
+                        navController = navController,
+                        viewModel = mainViewModel,
+                        categoryName = categoryName
                     )
                 }
             }

@@ -4,14 +4,17 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.example.oppo_play.BuildConfig
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
+import java.util.concurrent.TimeUnit
 
 object ApiClient {
-    const val BASE_URL = "http://192.168.0.101:3000/"
+    const val BASE_URL = "https://op-play-8zpz.vercel.app/"
 
     private val moshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -25,8 +28,17 @@ object ApiClient {
         }
     }
 
+    private val connectionSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+        .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
+        .build()
+
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(logging)
+        .connectionSpecs(listOf(connectionSpec, ConnectionSpec.CLEARTEXT))
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
         .build()
 
     val api: PlayStoreApi by lazy {

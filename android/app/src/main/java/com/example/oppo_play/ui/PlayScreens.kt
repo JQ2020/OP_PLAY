@@ -41,10 +41,10 @@ import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.rounded.Android
-import androidx.compose.material.icons.rounded.Gamepad
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.Image
+import com.example.oppo_play.R
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -475,25 +475,13 @@ fun PlayHeader(title: String) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Surface(
-                modifier = Modifier.size(44.dp),
-                shape = RoundedCornerShape(14.dp),
-                color = MaterialTheme.colorScheme.primary
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = when (title) {
-                            "Apps" -> Icons.Rounded.Android
-                            "Games" -> Icons.Rounded.Gamepad
-                            "Movies & Books" -> Icons.Outlined.Book
-                            "Library" -> Icons.Outlined.LibraryBooks
-                            else -> Icons.Rounded.Home
-                        },
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
+            Image(
+                painter = painterResource(id = R.drawable.ic_op_play),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(RoundedCornerShape(12.dp))
+            )
             Column {
                 Text(text = title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
                 Text(

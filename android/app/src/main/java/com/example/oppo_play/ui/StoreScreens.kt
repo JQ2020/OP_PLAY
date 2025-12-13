@@ -61,6 +61,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.example.oppo_play.R
 import com.example.oppo_play.model.StoreApp
 import com.example.oppo_play.ui.components.ReviewsSection
 import com.example.oppo_play.ui.components.WriteReviewDialog
@@ -111,6 +114,70 @@ fun KidsScreen(navController: NavController, viewModel: MainViewModel) {
         is AppsUiState.Loading -> LoadingScreen()
         is AppsUiState.Error -> ErrorScreen(state.message) { viewModel.loadApps() }
         is AppsUiState.Success -> KidsContent(navController, state.apps, viewModel)
+    }
+}
+
+@Composable
+fun CategoryScreen(
+    navController: NavController,
+    viewModel: MainViewModel,
+    categoryName: String
+) {
+    val apps = when (val state = viewModel.uiState) {
+        is AppsUiState.Success -> {
+            when (categoryName) {
+                "recommended" -> state.apps.sortedByDescending { parseDownloads(it.downloads) }
+                "top_rated" -> state.apps.sortedByDescending { it.rating }
+                "new_updated" -> state.apps.sortedByDescending { it.updatedAtMillis }
+                "games" -> state.apps.filter { it.category == "Games" }
+                else -> state.apps.filter { it.category.equals(categoryName, ignoreCase = true) }
+            }
+        }
+        else -> emptyList()
+    }
+
+    val title = when (categoryName) {
+        "recommended" -> "Recommended for you"
+        "top_rated" -> "Top rated"
+        "new_updated" -> "New & updated"
+        "games" -> "Games spotlight"
+        else -> categoryName
+    }
+
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ArrowBack,
+                contentDescription = "Back",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { navController.popBackStack() }
+            )
+            Spacer(Modifier.width(16.dp))
+            Text(
+                title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Normal
+            )
+        }
+
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Spacer(Modifier.height(8.dp))
+            apps.forEach { app ->
+                AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+            }
+            Spacer(Modifier.height(96.dp))
+        }
     }
 }
 
@@ -177,112 +244,272 @@ fun AppDetailScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(horizontal = 16.dp)
     ) {
-        Spacer(Modifier.height(8.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        // Top bar
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(
                 imageVector = Icons.Outlined.ArrowBack,
                 contentDescription = "Back",
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(24.dp)
                     .clickable { navController.popBackStack() }
             )
-            Spacer(Modifier.width(8.dp))
-            Text("Details", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
         }
 
-        Spacer(Modifier.height(16.dp))
-
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            AppIcon(app, size = 96.dp, radius = 24.dp)
-            Column(modifier = Modifier.weight(1f)) {
-                Text(app.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Text(app.developer, color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
-                Spacer(Modifier.height(6.dp))
-                RatingRow(app)
-                Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    InstallButton(
-                        status = installStatus,
-                        progress = downloadProgress,
-                        onClick = {
-                            if (installStatus == "installed") return@InstallButton
-                            if (installStatus != "idle" && installStatus != "failed") return@InstallButton
-                            installTaskViewModel.startDownload(app.id)
-                        },
-                        modifier = Modifier.weight(1f)
+        // App header
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                AppIcon(app, size = 72.dp, radius = 16.dp)
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        app.title,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Normal,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
-                    WishlistButton(
-                        isInWishlist = isInWishlist,
-                        isLoading = wishlistLoading,
-                        onClick = {
-                            if (user == null) {
-                                userViewModel.showLogin()
-                                return@WishlistButton
-                            }
-                            wishlistLoading = true
-                            scope.launch {
-                                if (isInWishlist) {
-                                    if (UserHistoryRepository.removeFromWishlist(user.id, app.id)) {
-                                        isInWishlist = false
-                                    }
-                                } else {
-                                    if (UserHistoryRepository.addToWishlist(user.id, app.id)) {
-                                        isInWishlist = true
-                                    }
-                                }
-                                wishlistLoading = false
-                            }
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        app.developer,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 14.sp
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "Contains ads · In-app purchases",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            // Stats row (Google Play style)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            String.format("%.1f", app.rating),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Text(" ★", fontSize = 12.sp)
+                    }
+                    Text(
+                        "reviews",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(32.dp)
+                        .background(MaterialTheme.colorScheme.outlineVariant)
+                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        app.downloads,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        "Downloads",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(32.dp)
+                        .background(MaterialTheme.colorScheme.outlineVariant)
+                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        if (app.size.isNotBlank()) app.size else "Varies",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        "Size",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            // Install button (full width, Google Play style)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                InstallButton(
+                    status = installStatus,
+                    progress = downloadProgress,
+                    onClick = {
+                        if (installStatus == "installed") return@InstallButton
+                        if (installStatus != "idle" && installStatus != "failed") return@InstallButton
+                        installTaskViewModel.startDownload(app.id)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+                WishlistButton(
+                    isInWishlist = isInWishlist,
+                    isLoading = wishlistLoading,
+                    onClick = {
+                        if (user == null) {
+                            userViewModel.showLogin()
+                            return@WishlistButton
                         }
+                        wishlistLoading = true
+                        scope.launch {
+                            if (isInWishlist) {
+                                if (UserHistoryRepository.removeFromWishlist(user.id, app.id)) {
+                                    isInWishlist = false
+                                }
+                            } else {
+                                if (UserHistoryRepository.addToWishlist(user.id, app.id)) {
+                                    isInWishlist = true
+                                }
+                            }
+                            wishlistLoading = false
+                        }
+                    }
+                )
+            }
+        }
+
+        // About section
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Spacer(Modifier.height(24.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "About this app",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Normal
+                )
+                Icon(
+                    Icons.Outlined.ArrowForward,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+            Text(
+                app.description,
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(Modifier.height(12.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                ) {
+                    Text(
+                        app.category,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        fontSize = 12.sp
                     )
                 }
             }
         }
 
-        Spacer(Modifier.height(20.dp))
-        StatsStrip(app)
-
-        Spacer(Modifier.height(20.dp))
-        SectionTitle("About this app")
-        ExpandableText(app.description)
-        Spacer(Modifier.height(12.dp))
-        InfoChips(app)
-
-        Spacer(Modifier.height(20.dp))
-        ReviewsSection(
-            uiState = reviewViewModel.uiState,
-            currentUserName = userViewModel.user?.name,
-            onWriteReview = {
-                if (userViewModel.requireUser()) {
-                    showWriteReview = true
+        // Reviews section
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Spacer(Modifier.height(24.dp))
+            ReviewsSection(
+                uiState = reviewViewModel.uiState,
+                currentUserName = userViewModel.user?.name,
+                onWriteReview = {
+                    if (userViewModel.requireUser()) {
+                        showWriteReview = true
+                    }
+                },
+                onDeleteReview = { reviewId ->
+                    reviewViewModel.deleteReview(reviewId)
                 }
-            },
-            onDeleteReview = { reviewId ->
-                reviewViewModel.deleteReview(reviewId)
+            )
+        }
+
+        // Data safety section
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Spacer(Modifier.height(24.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Data safety",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Normal
+                )
+                Icon(
+                    Icons.Outlined.ArrowForward,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
             }
-        )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                "Safety starts with understanding how developers collect and share your data.",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                lineHeight = 20.sp
+            )
+        }
 
-        Spacer(Modifier.height(20.dp))
-        SectionTitle("Data safety")
-        Text(
-            "Safety starts with understanding how developers collect and share your data. " +
-                "No detailed data-safety info is provided by the current API.",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            lineHeight = 18.sp
-        )
-
-        Spacer(Modifier.height(20.dp))
-        SectionTitle("Similar apps")
-        SimilarRow(
-            items = viewModel.uiState.let {
-                if (it is AppsUiState.Success) {
-                    it.apps.filter { other -> other.category == app.category && other.id != app.id }.take(6)
-                } else emptyList()
-            },
-            onClick = { navController.navigate("detail/$it") }
-        )
+        // Similar apps section
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Spacer(Modifier.height(24.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Similar apps",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Normal
+                )
+                Icon(
+                    Icons.Outlined.ArrowForward,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+            SimilarRow(
+                items = viewModel.uiState.let {
+                    if (it is AppsUiState.Success) {
+                        it.apps.filter { other -> other.category == app.category && other.id != app.id }.take(6)
+                    } else emptyList()
+                },
+                onClick = { navController.navigate("detail/$it") }
+            )
+        }
 
         Spacer(Modifier.height(96.dp))
     }
@@ -400,35 +627,48 @@ private fun AppsContent(
                 )
                 Spacer(Modifier.height(14.dp))
 
-                val recommended = sortByDownloads(filteredApps).take(6)
+                val usedIds = mutableSetOf<String>()
+
+                val recommended = sortByDownloads(filteredApps).take(3)
+                usedIds.addAll(recommended.map { it.id })
                 AppsSectionBlock(
-                    title = "Recommended for you${categoryFilter?.let { " · $it" } ?: ""}",
-                    onMore = { section = AppsSection.TOP_CHARTS; sort = ChartsSort.DOWNLOADS },
+                    title = "Recommended for you",
+                    onMore = { navController.navigate("category/recommended") },
                     apps = recommended,
                     onAppClick = { navController.navigate("detail/$it") }
                 )
 
-                val topRated = filteredApps.sortedByDescending { it.rating }.take(6)
+                val topRated = filteredApps
+                    .filter { it.id !in usedIds }
+                    .sortedByDescending { it.rating }
+                    .take(3)
+                usedIds.addAll(topRated.map { it.id })
                 AppsSectionBlock(
                     title = "Top rated",
-                    onMore = { section = AppsSection.TOP_CHARTS; sort = ChartsSort.RATING },
+                    onMore = { navController.navigate("category/top_rated") },
                     apps = topRated,
                     onAppClick = { navController.navigate("detail/$it") }
                 )
 
-                val recent = filteredApps.sortedByDescending { it.updatedAtMillis }.take(6)
+                val recent = filteredApps
+                    .filter { it.id !in usedIds }
+                    .sortedByDescending { it.updatedAtMillis }
+                    .take(3)
+                usedIds.addAll(recent.map { it.id })
                 AppsSectionBlock(
                     title = "New & updated",
-                    onMore = { section = AppsSection.TOP_CHARTS; sort = ChartsSort.RECENT },
+                    onMore = { navController.navigate("category/new_updated") },
                     apps = recent,
                     onAppClick = { navController.navigate("detail/$it") }
                 )
 
-                val gamesSpotlight = filteredApps.filter { it.category == "Games" }.take(6)
+                val gamesSpotlight = filteredApps
+                    .filter { it.category == "Games" && it.id !in usedIds }
+                    .take(3)
                 if (gamesSpotlight.isNotEmpty()) {
                     AppsSectionBlock(
                         title = "Games spotlight",
-                        onMore = { navController.navigate(PlayDestination.Games.route) },
+                        onMore = { navController.navigate("category/games") },
                         apps = gamesSpotlight,
                         onAppClick = { navController.navigate("detail/$it") }
                     )
@@ -455,13 +695,6 @@ private fun GamesContent(navController: NavController, allApps: List<StoreApp>, 
         }
     } else games
 
-    val sorted = when (view) {
-        GamesView.TOP -> searched.sortedByDescending { it.rating }
-        GamesView.RECENT -> searched.sortedByDescending { it.updatedAtMillis }
-        else -> sortByDownloads(searched)
-    }
-    val visible = if (view == GamesView.INSTALLED) sorted.filter { it.isInstalled } else sorted
-
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -473,14 +706,71 @@ private fun GamesContent(navController: NavController, allApps: List<StoreApp>, 
         PageTitleWithSearch(title = "Games", hint = "Search for games", query = query, onQueryChange = { query = it })
         Spacer(Modifier.height(8.dp))
         GamesViewChips(selected = view, onSelected = { view = it })
-        Spacer(Modifier.height(12.dp))
-        Text(
-            "${visible.size} games${if (searchTerm.isNotEmpty()) " · search: \"$searchTerm\"" else ""}",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(Modifier.height(8.dp))
-        AppGrid(visible, onAppClick = { navController.navigate("detail/$it") })
+        Spacer(Modifier.height(16.dp))
+
+        if (searchTerm.isNotEmpty()) {
+            searched.forEach { app ->
+                AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+            }
+        } else {
+            when (view) {
+                GamesView.FOR_YOU -> {
+                    val usedIds = mutableSetOf<String>()
+
+                    val topGames = sortByDownloads(games).take(3)
+                    usedIds.addAll(topGames.map { it.id })
+                    AppsSectionBlock(
+                        title = "Top games",
+                        onMore = { navController.navigate("category/games") },
+                        apps = topGames,
+                        onAppClick = { navController.navigate("detail/$it") }
+                    )
+
+                    val topRated = games
+                        .filter { it.id !in usedIds }
+                        .sortedByDescending { it.rating }
+                        .take(3)
+                    usedIds.addAll(topRated.map { it.id })
+                    AppsSectionBlock(
+                        title = "Top rated games",
+                        onMore = { navController.navigate("category/games") },
+                        apps = topRated,
+                        onAppClick = { navController.navigate("detail/$it") }
+                    )
+
+                    val recent = games
+                        .filter { it.id !in usedIds }
+                        .sortedByDescending { it.updatedAtMillis }
+                        .take(3)
+                    AppsSectionBlock(
+                        title = "New games",
+                        onMore = { navController.navigate("category/games") },
+                        apps = recent,
+                        onAppClick = { navController.navigate("detail/$it") }
+                    )
+                }
+                GamesView.TOP -> {
+                    games.sortedByDescending { it.rating }.forEach { app ->
+                        AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+                    }
+                }
+                GamesView.RECENT -> {
+                    games.sortedByDescending { it.updatedAtMillis }.forEach { app ->
+                        AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+                    }
+                }
+                GamesView.INSTALLED -> {
+                    val installed = games.filter { it.isInstalled }
+                    if (installed.isEmpty()) {
+                        Text("No installed games", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    } else {
+                        installed.forEach { app ->
+                            AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+                        }
+                    }
+                }
+            }
+        }
         Spacer(Modifier.height(96.dp))
     }
 }
@@ -501,17 +791,6 @@ private fun KidsContent(navController: NavController, allApps: List<StoreApp>, v
         }
     } else kidsApps
 
-    val sorted = when (view) {
-        KidsView.TOP -> searched.sortedByDescending { it.rating }
-        KidsView.RECENT -> searched.sortedByDescending { it.updatedAtMillis }
-        KidsView.LEARNING -> searched.filter {
-            it.category == "Education" ||
-                it.title.contains("learn", ignoreCase = true) ||
-                it.description.contains("learn", ignoreCase = true)
-        }
-        KidsView.FOR_KIDS -> searched.sortedWith(compareByDescending<StoreApp> { it.category == "Kids" }.thenByDescending { parseDownloads(it.downloads) })
-    }
-
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -523,14 +802,70 @@ private fun KidsContent(navController: NavController, allApps: List<StoreApp>, v
         PageTitleWithSearch(title = "Kids", hint = "Search for kids apps", query = query, onQueryChange = { query = it })
         Spacer(Modifier.height(8.dp))
         KidsViewChips(selected = view, onSelected = { view = it })
-        Spacer(Modifier.height(12.dp))
-        Text(
-            "${sorted.size} apps${if (searchTerm.isNotEmpty()) " · search: \"$searchTerm\"" else ""}",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(Modifier.height(8.dp))
-        AppGrid(sorted, onAppClick = { navController.navigate("detail/$it") })
+        Spacer(Modifier.height(16.dp))
+
+        if (searchTerm.isNotEmpty()) {
+            searched.forEach { app ->
+                AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+            }
+        } else {
+            when (view) {
+                KidsView.FOR_KIDS -> {
+                    val usedIds = mutableSetOf<String>()
+
+                    val topKids = sortByDownloads(kidsApps).take(3)
+                    usedIds.addAll(topKids.map { it.id })
+                    AppsSectionBlock(
+                        title = "Popular for kids",
+                        onMore = { navController.navigate("category/Kids") },
+                        apps = topKids,
+                        onAppClick = { navController.navigate("detail/$it") }
+                    )
+
+                    val education = kidsApps
+                        .filter { it.category == "Education" && it.id !in usedIds }
+                        .take(3)
+                    usedIds.addAll(education.map { it.id })
+                    AppsSectionBlock(
+                        title = "Education",
+                        onMore = { navController.navigate("category/Education") },
+                        apps = education,
+                        onAppClick = { navController.navigate("detail/$it") }
+                    )
+
+                    val recent = kidsApps
+                        .filter { it.id !in usedIds }
+                        .sortedByDescending { it.updatedAtMillis }
+                        .take(3)
+                    AppsSectionBlock(
+                        title = "New for kids",
+                        onMore = { navController.navigate("category/Kids") },
+                        apps = recent,
+                        onAppClick = { navController.navigate("detail/$it") }
+                    )
+                }
+                KidsView.TOP -> {
+                    kidsApps.sortedByDescending { it.rating }.forEach { app ->
+                        AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+                    }
+                }
+                KidsView.LEARNING -> {
+                    val learning = kidsApps.filter {
+                        it.category == "Education" ||
+                            it.title.contains("learn", ignoreCase = true) ||
+                            it.description.contains("learn", ignoreCase = true)
+                    }
+                    learning.forEach { app ->
+                        AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+                    }
+                }
+                KidsView.RECENT -> {
+                    kidsApps.sortedByDescending { it.updatedAtMillis }.forEach { app ->
+                        AppListRow(app = app, onClick = { navController.navigate("detail/${app.id}") })
+                    }
+                }
+            }
+        }
         Spacer(Modifier.height(96.dp))
     }
 }
@@ -564,31 +899,45 @@ private fun TopHeaderSearch(
     onProfileClick: () -> Unit,
     onDownloadsClick: () -> Unit
 ) {
-    Column {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Surface(
-                modifier = Modifier.size(40.dp),
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Text("OP", color = Color.White, fontWeight = FontWeight.Bold)
-                }
-            }
-            Spacer(Modifier.width(10.dp))
-            Text(
-                "OP Play",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.weight(1f)
+            Image(
+                painter = painterResource(id = R.drawable.ic_op_play),
+                contentDescription = "OP Play",
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
-            // Downloads button
+            Spacer(Modifier.width(12.dp))
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .weight(1f)
+                    .clickable { }
+            ) {
+                if (query.isEmpty()) {
+                    Text(
+                        "Search for apps & games",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 16.sp
+                    )
+                } else {
+                    Text(query, fontSize = 16.sp)
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
                     .clickable(onClick = onDownloadsClick),
                 contentAlignment = Alignment.Center
             ) {
@@ -596,55 +945,54 @@ private fun TopHeaderSearch(
                     Icons.Outlined.Download,
                     contentDescription = "Downloads",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(22.dp)
                 )
                 if (activeDownloadsCount > 0) {
                     Box(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .size(16.dp)
-                            .clip(androidx.compose.foundation.shape.CircleShape)
+                            .size(14.dp)
+                            .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.error),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = if (activeDownloadsCount > 9) "9+" else activeDownloadsCount.toString(),
                             color = Color.White,
-                            fontSize = 9.sp,
+                            fontSize = 8.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
                 }
             }
             Spacer(Modifier.width(4.dp))
-            // User avatar button
             Surface(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(32.dp)
                     .clickable(onClick = onProfileClick),
                 color = if (user != null) MaterialTheme.colorScheme.primaryContainer
                        else MaterialTheme.colorScheme.surfaceVariant,
-                shape = androidx.compose.foundation.shape.CircleShape
+                shape = CircleShape
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     if (user != null) {
                         Text(
                             user.name.firstOrNull()?.uppercase() ?: "?",
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp
                         )
                     } else {
                         Icon(
                             Icons.Outlined.Person,
                             contentDescription = "Sign in",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                 }
             }
         }
-        Spacer(Modifier.height(10.dp))
-        SearchField(query = query, hint = "Search for apps & games", onQueryChange = onQueryChange)
     }
 }
 
@@ -785,19 +1133,19 @@ private fun AssistChip(label: String, selected: Boolean, onClick: () -> Unit) {
 
 @Composable
 private fun SectionChip(label: String, selected: Boolean, onClick: () -> Unit) {
-    val bg = if (selected) MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surface
-    val border = if (selected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant
-    val textColor = if (selected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurfaceVariant
+    val bg = if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+    val border = if (selected) Color.Transparent else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+    val textColor = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
     Surface(
         modifier = Modifier
-            .clip(RoundedCornerShape(10.dp))
-            .border(1.dp, border, RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(8.dp))
+            .then(if (!selected) Modifier.border(1.dp, border, RoundedCornerShape(8.dp)) else Modifier)
             .clickable(onClick = onClick),
         color = bg
     ) {
         Text(
             label,
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             fontSize = 14.sp,
             color = textColor
         )
@@ -914,23 +1262,28 @@ private fun AppsSectionBlock(
     onAppClick: (String) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onMore)
+            .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Medium)
+        Text(
+            title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
         Icon(
             imageVector = Icons.Outlined.ArrowForward,
-            contentDescription = null,
-            modifier = Modifier
-                .size(20.dp)
-                .clickable(onClick = onMore),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            contentDescription = "See more",
+            modifier = Modifier.size(24.dp),
+            tint = MaterialTheme.colorScheme.onSurface
         )
     }
-    Spacer(Modifier.height(8.dp))
     AppGrid(apps, onAppClick)
-    Spacer(Modifier.height(18.dp))
+    Spacer(Modifier.height(16.dp))
 }
 
 @Composable
@@ -940,39 +1293,69 @@ private fun SectionTitle(text: String) {
 
 @Composable
 private fun AppGrid(items: List<StoreApp>, onAppClick: (String) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        items.chunked(2).forEach { rowItems ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                rowItems.forEach { app ->
-                    AppCard(
-                        app = app,
-                        modifier = Modifier.weight(1f),
-                        onClick = { onAppClick(app.id) }
-                    )
-                }
-                if (rowItems.size == 1) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
+    Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
+        items.take(3).forEach { app ->
+            AppListRow(app = app, onClick = { onAppClick(app.id) })
+        }
+    }
+}
+
+@Composable
+private fun AppListRow(app: StoreApp, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AppIcon(app, size = 64.dp, radius = 12.dp)
+        Spacer(Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                app.title,
+                fontSize = 15.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(Modifier.height(2.dp))
+            Text(
+                app.description.take(50) + if (app.description.length > 50) "..." else "",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                lineHeight = 16.sp
+            )
+            Spacer(Modifier.height(4.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    String.format("%.1f", app.rating),
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    " ★",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
 }
 
 @Composable
-private fun AppCard(app: StoreApp, modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun AppCard(app: StoreApp, onClick: () -> Unit) {
     Column(
-        modifier = modifier.clickable(onClick = onClick),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        modifier = Modifier
+            .width(80.dp)
+            .clickable(onClick = onClick),
+        horizontalAlignment = Alignment.Start
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(24.dp))
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(24.dp))
+                .size(64.dp)
+                .clip(RoundedCornerShape(16.dp))
         ) {
             AsyncImage(
                 model = app.iconUrl,
@@ -980,42 +1363,75 @@ private fun AppCard(app: StoreApp, modifier: Modifier = Modifier, onClick: () ->
                 modifier = Modifier.fillMaxSize()
             )
         }
+        Spacer(Modifier.height(8.dp))
         Text(
             app.title,
-            fontSize = 13.sp,
+            fontSize = 12.sp,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
+            lineHeight = 14.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(String.format("%.1f", app.rating), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Icon(Icons.Rounded.Star, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(12.dp))
+        Spacer(Modifier.height(2.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                String.format("%.1f", app.rating),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                " ★",
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
 
 @Composable
 private fun TopChartsList(items: List<StoreApp>, onAppClick: (String) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
         items.forEachIndexed { index, app ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
                     .clickable { onAppClick(app.id) }
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("${index + 1}", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(18.dp))
-                AppIcon(app, size = 56.dp, radius = 16.dp)
+                Text(
+                    "${index + 1}",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.width(24.dp)
+                )
+                AppIcon(app, size = 56.dp, radius = 12.dp)
+                Spacer(Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(app.title, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Text(app.developer, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    RatingRow(app, small = true)
+                    Text(
+                        app.title,
+                        fontSize = 14.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        app.category,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            String.format("%.1f", app.rating),
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            " ★",
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
-                Icon(Icons.Outlined.ArrowForward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
             }
         }
     }
@@ -1066,12 +1482,32 @@ private fun SimilarRow(items: List<StoreApp>, onClick: (String) -> Unit) {
         items.forEach { app ->
             Column(
                 modifier = Modifier
-                    .width(96.dp)
-                    .clickable { onClick(app.id) }
+                    .width(80.dp)
+                    .clickable { onClick(app.id) },
+                horizontalAlignment = Alignment.Start
             ) {
-                AppIcon(app, size = 96.dp, radius = 24.dp)
-                Spacer(Modifier.height(6.dp))
-                Text(app.title, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                AppIcon(app, size = 64.dp, radius = 16.dp)
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    app.title,
+                    fontSize = 12.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = 14.sp
+                )
+                Spacer(Modifier.height(2.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        String.format("%.1f", app.rating),
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        " ★",
+                        fontSize = 10.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }
@@ -1079,18 +1515,13 @@ private fun SimilarRow(items: List<StoreApp>, onClick: (String) -> Unit) {
 
 @Composable
 private fun AppIcon(app: StoreApp, size: androidx.compose.ui.unit.Dp, radius: androidx.compose.ui.unit.Dp) {
-    Box(
+    AsyncImage(
+        model = app.iconUrl,
+        contentDescription = app.title,
         modifier = Modifier
             .size(size)
             .clip(RoundedCornerShape(radius))
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(radius))
-    ) {
-        AsyncImage(
-            model = app.iconUrl,
-            contentDescription = app.title,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
+    )
 }
 
 @Composable
@@ -1185,11 +1616,14 @@ private fun InstallButton(
 ) {
     val isLoading = status in listOf("downloading", "installing")
     val bg = when (status) {
-        "installed" -> MaterialTheme.colorScheme.surfaceVariant
-        "downloading", "installing" -> MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
+        "installed" -> MaterialTheme.colorScheme.secondaryContainer
+        "downloading", "installing" -> MaterialTheme.colorScheme.primary
         else -> MaterialTheme.colorScheme.primary
     }
-    val fg = if (status == "installed") MaterialTheme.colorScheme.onSurface else Color.White
+    val fg = when (status) {
+        "installed" -> MaterialTheme.colorScheme.onSecondaryContainer
+        else -> MaterialTheme.colorScheme.onPrimary
+    }
     val label = when (status) {
         "installed" -> "Open"
         "downloading" -> "${progress}%"
@@ -1200,19 +1634,24 @@ private fun InstallButton(
     Button(
         onClick = onClick,
         enabled = !isLoading,
-        colors = ButtonDefaults.buttonColors(containerColor = bg, contentColor = fg),
-        shape = RoundedCornerShape(10.dp),
-        modifier = modifier
+        colors = ButtonDefaults.buttonColors(
+            containerColor = bg,
+            contentColor = fg,
+            disabledContainerColor = bg.copy(alpha = 0.7f),
+            disabledContentColor = fg.copy(alpha = 0.7f)
+        ),
+        shape = RoundedCornerShape(20.dp),
+        modifier = modifier.height(40.dp)
     ) {
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(16.dp),
-                color = Color.White,
+                color = fg,
                 strokeWidth = 2.dp
             )
             Spacer(Modifier.width(8.dp))
         }
-        Text(label, fontSize = 14.sp)
+        Text(label, fontSize = 14.sp, fontWeight = FontWeight.Medium)
     }
 }
 
