@@ -13,6 +13,8 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@libsql/client": "^0.6.0",
+    "@prisma/adapter-libsql": "^5.21.1",
     "@prisma/client": "^5.21.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
