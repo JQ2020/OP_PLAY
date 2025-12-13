@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { MobileNav } from "@/components/MobileNav";
+import { UserProvider } from "@/contexts/UserContext";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -24,8 +25,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.variable} font-sans antialiased`}>
         <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
-          {children}
-          <MobileNav />
+          <UserProvider>
+            {children}
+            <MobileNav />
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>

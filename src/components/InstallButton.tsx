@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Loader2, Check } from "lucide-react";
 import { markAppInstalled } from "@/app/actions";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUser } from "@/contexts/UserContext";
 
 type InstallButtonProps = {
   appId: string;
@@ -13,6 +14,7 @@ type InstallButtonProps = {
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function InstallButton({ appId, isInstalled = false }: InstallButtonProps) {
+  const { user } = useUser();
   const [status, setStatus] = useState<"idle" | "pending" | "success" | "installed">(
     isInstalled ? "installed" : "idle",
   );
@@ -37,6 +39,15 @@ export function InstallButton({ appId, isInstalled = false }: InstallButtonProps
     setStatus("pending");
     startTransition(async () => {
       await Promise.allSettled([markAppInstalled(appId), delay(2000)]);
+
+      if (user) {
+        await fetch("/api/downloads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, appId }),
+        }).catch(() => {});
+      }
+
       setStatus("success");
       await delay(800);
       setStatus("installed");

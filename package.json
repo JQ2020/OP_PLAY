@@ -37,6 +37,7 @@
     "concurrently": "^9.2.1",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
+    "google-play-scraper": "^10.1.2",
     "prisma": "^5.21.1",
     "tailwindcss": "^4",
     "tsx": "^4.19.2",

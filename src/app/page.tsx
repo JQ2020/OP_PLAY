@@ -210,6 +210,7 @@ export default async function Home({ searchParams }: Props) {
                   alt={`${app.title} icon`}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
               </div>
               <div className="flex flex-1 flex-col gap-0.5">

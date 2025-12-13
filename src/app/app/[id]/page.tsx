@@ -4,8 +4,7 @@ import { InstallButton } from "@/components/InstallButton";
 import { prisma } from "@/lib/prisma";
 import { ArrowRight, ShieldCheck, Share2 } from "lucide-react";
 import { ScreenshotCarousel } from "@/components/ScreenshotCarousel";
-import { ReviewList } from "@/components/ReviewList";
-import { RatingSummary } from "@/components/RatingSummary";
+import { ReviewSection } from "@/components/ReviewSection";
 import Link from "next/link";
 import { StarRating } from "@/components/StarRating";
 import { AppActions } from "@/components/AppActions";
@@ -63,6 +62,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
               fill
               className="object-cover"
               priority
+              unoptimized
             />
           </div>
 
@@ -104,7 +104,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
             {/* Install Button Area */}
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
               <InstallButton appId={app.id} isInstalled={app.isInstalled} />
-              <AppActions appTitle={app.title} developer={app.developer} />
+              <AppActions appId={app.id} appTitle={app.title} developer={app.developer} />
             </div>
           </div>
         </div>
@@ -203,32 +203,15 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
         </section>
 
         {/* Ratings & Reviews */}
-        <section className="border-b border-border-light px-4 py-6 md:px-6" id="reviews">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-xl font-normal text-ink">Ratings and reviews</h2>
-            <Link
-              href={`/?section=top-charts&category=${encodeURIComponent(app.category)}`}
-              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface-variant"
-            >
-              <ArrowRight size={20} className="text-ink-secondary" />
-            </Link>
-          </div>
-
-          <div className="mb-8">
-            <RatingSummary rating={app.rating} totalReviews={reviewCount} />
-          </div>
-
-          <ReviewList reviews={app.reviews} />
-
-          <div className="mt-6">
-            <Link
-              href={`/app/${app.id}?reviews=all#reviews`}
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              See all reviews
-            </Link>
-          </div>
-        </section>
+        <ReviewSection
+          appId={app.id}
+          appTitle={app.title}
+          appCategory={app.category}
+          reviews={app.reviews}
+          rating={app.rating}
+          totalReviews={reviewCount}
+          showAllReviews={showAllReviews}
+        />
 
         {/* Similar Apps */}
         {similarApps.length > 0 && (
@@ -250,7 +233,7 @@ export default async function AppPage({ params, searchParams }: AppPageProps) {
                   className="flex w-28 flex-shrink-0 flex-col gap-2"
                 >
                   <div className="relative h-28 w-28 overflow-hidden rounded-3xl border border-border-light shadow-sm">
-                    <Image src={similar.iconUrl} alt={similar.title} fill className="object-cover" />
+                    <Image src={similar.iconUrl} alt={similar.title} fill className="object-cover" unoptimized />
                   </div>
                   <span className="line-clamp-2 text-xs font-normal text-ink">{similar.title}</span>
                   <div className="flex items-center gap-1">

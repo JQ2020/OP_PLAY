@@ -291,6 +291,7 @@ export function RemoteInstallPanel({ appId, appTitle }: Props) {
                         alt={task.app.title}
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-xs text-ink-secondary">

@@ -211,6 +211,7 @@ export function AppsTable({ apps, categories }: AppsTableProps) {
                             alt={app.title}
                             fill
                             className="object-cover"
+                            unoptimized
                           />
                         </div>
                         <div className="min-w-0">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
 import Image from "next/image";
+import { UserMenu } from "./UserMenu";
 
 export function Header() {
   const router = useRouter();
@@ -70,12 +71,7 @@ export function Header() {
         >
           <HelpCircle className="h-5 w-5 text-ink-secondary" />
         </button>
-        <button
-          className="ml-2 flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-[#ea4335] text-sm font-medium text-white transition-opacity hover:opacity-90 active:scale-95"
-          aria-label="User account"
-        >
-          A
-        </button>
+        <UserMenu />
       </div>
     </header>
   );

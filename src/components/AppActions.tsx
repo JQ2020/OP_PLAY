@@ -1,23 +1,38 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BookmarkCheck, BookmarkPlus, MoreVertical, Share2 } from "lucide-react";
+import { BookmarkCheck, BookmarkPlus, Loader2, MoreVertical, Share2 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useUser } from "@/contexts/UserContext";
 
 type AppActionsProps = {
+  appId: string;
   appTitle: string;
   developer: string;
 };
 
-export function AppActions({ appTitle, developer }: AppActionsProps) {
+export function AppActions({ appId, appTitle, developer }: AppActionsProps) {
+  const { user, isLoggedIn } = useUser();
   const [shareLabel, setShareLabel] = useState("Share");
   const [saved, setSaved] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!isLoggedIn || !user) {
+      setSaved(false);
+      return;
+    }
+    fetch(`/api/wishlist/check?userId=${user.id}&appId=${appId}`)
+      .then((res) => res.json())
+      .then((data) => setSaved(data.inWishlist))
+      .catch(() => {});
+  }, [isLoggedIn, user, appId]);
 
   const handleShare = async () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
@@ -44,8 +59,30 @@ export function AppActions({ appTitle, developer }: AppActionsProps) {
     }
   };
 
-  const toggleSave = () => {
-    setSaved((prev) => !prev);
+  const toggleSave = async () => {
+    if (!isLoggedIn || !user) return;
+    setIsLoading(true);
+    try {
+      if (saved) {
+        await fetch("/api/wishlist", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, appId }),
+        });
+        setSaved(false);
+      } else {
+        await fetch("/api/wishlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, appId }),
+        });
+        setSaved(true);
+      }
+    } catch (error) {
+      console.error("Wishlist toggle failed", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -59,11 +96,19 @@ export function AppActions({ appTitle, developer }: AppActionsProps) {
         <span>{shareLabel}</span>
       </button>
       <button
-        className="flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors hover:bg-green-50"
+        className="flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors hover:bg-green-50 disabled:opacity-50"
         onClick={toggleSave}
+        disabled={isLoading || !isLoggedIn}
+        title={!isLoggedIn ? "Login to add to wishlist" : undefined}
         type="button"
       >
-        {saved ? <BookmarkCheck size={18} /> : <BookmarkPlus size={18} />}
+        {isLoading ? (
+          <Loader2 size={18} className="animate-spin" />
+        ) : saved ? (
+          <BookmarkCheck size={18} />
+        ) : (
+          <BookmarkPlus size={18} />
+        )}
         <span>{saved ? "Saved" : "Wishlist"}</span>
       </button>
       <div className="relative">
