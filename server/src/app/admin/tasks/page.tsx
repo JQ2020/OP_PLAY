@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
+export const dynamic = "force-dynamic";
+
 type TaskStatus = "QUEUED" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
 
 const statusConfig: Record<

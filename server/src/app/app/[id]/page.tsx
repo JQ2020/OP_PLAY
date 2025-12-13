@@ -10,6 +10,8 @@ import { StarRating } from "@/components/StarRating";
 import { AppActions } from "@/components/AppActions";
 import { ExpandableText } from "@/components/ExpandableText";
 
+export const dynamic = "force-dynamic";
+
 type AppPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

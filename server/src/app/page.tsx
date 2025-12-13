@@ -4,6 +4,8 @@ import { Sidebar } from "@/components/Sidebar";
 import { StarRating } from "@/components/StarRating";
 import { HeroBanner } from "@/components/HeroBanner";
 import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 import {
   ArrowRight,
   Gamepad2,

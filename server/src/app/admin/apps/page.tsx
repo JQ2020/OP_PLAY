@@ -2,6 +2,8 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { AppsTable } from "@/components/AppsTable";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminAppsPage() {
   const apps = await prisma.app.findMany({
     orderBy: { updatedAt: "desc" },

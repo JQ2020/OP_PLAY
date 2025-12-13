@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDevicesPage() {
   const devices = await prisma.device.findMany({
     orderBy: { lastSeen: "desc" },
