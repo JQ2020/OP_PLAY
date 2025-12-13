@@ -580,7 +580,7 @@ private fun TopHeaderSearch(
             }
             Spacer(Modifier.width(10.dp))
             Text(
-                "OPPO Play",
+                "OP Play",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.weight(1f)

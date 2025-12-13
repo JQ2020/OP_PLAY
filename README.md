@@ -1,10 +1,10 @@
-# OPPO Play
+# OP Play
 
 一个全栈移动应用商店项目，包含 Android 客户端和 Web 管理后台。
 
 ## 项目简介
 
-OPPO Play 是一个基于 Google Play Store 设计风格的应用商店解决方案，采用现代化技术栈构建，支持应用浏览、搜索、详情查看、远程安装等完整功能。项目分为两个主要部分：
+OP Play 是一个基于 Google Play Store 设计风格的应用商店解决方案，采用现代化技术栈构建，支持应用浏览、搜索、详情查看、远程安装等完整功能。项目分为两个主要部分：
 
 - **Android 客户端**：原生 Kotlin + Jetpack Compose 开发的移动端应用
 - **Web 服务端**：Next.js 全栈应用，包含应用商店前台和管理后台
@@ -28,7 +28,7 @@ OPPO Play 是一个基于 Google Play Store 设计风格的应用商店解决方
 ## 项目结构
 
 ```
-oppo-play/
+op-play/
 ├── android/              # Android 客户端
 │   ├── app/              # 主应用模块
 │   │   ├── src/main/

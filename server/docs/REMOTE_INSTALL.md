@@ -19,8 +19,8 @@
 `POST /api/devices`
 ```json
 {
-  "id": "oppo-find-x7",          // 设备唯一 ID（由 App 生成并持久化）
-  "name": "OPPO Find X7",
+  "id": "op-find-x7",          // 设备唯一 ID（由 App 生成并持久化）
+  "name": "OP Find X7",
   "platform": "Android",
   "osVersion": "14",
   "appVersion": "1.0.0",
@@ -40,7 +40,7 @@
 ```json
 {
   "appId": "<app uuid>",
-  "deviceId": "oppo-find-x7",
+  "deviceId": "op-find-x7",
   "downloadUrl": "https://example.com/artifacts/app.apk", // 可选，不传则服务端用占位地址
   "hash": "sha256-xxxxx",                                 // 可选
   "status": "QUEUED"                                      // 可选，默认 QUEUED

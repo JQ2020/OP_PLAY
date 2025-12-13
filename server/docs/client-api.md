@@ -168,7 +168,7 @@ POST /api/devices
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | id | string | ✅ | 设备唯一标识（推荐使用 Android ID 或自定义 UUID） |
-| name | string | ✅ | 设备名称（如 "OPPO Find X6 Pro"） |
+| name | string | ✅ | 设备名称（如 "OP Find X6 Pro"） |
 | platform | string | ✅ | 平台标识（如 "Android"） |
 | osVersion | string | ❌ | 系统版本（如 "Android 14"） |
 | appVersion | string | ❌ | 客户端 App 版本（如 "1.0.0"） |
@@ -180,7 +180,7 @@ POST /api/devices
 ```json
 {
   "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "name": "OPPO Find X6 Pro",
+  "name": "OP Find X6 Pro",
   "platform": "Android",
   "osVersion": "Android 14",
   "appVersion": "1.2.0",
@@ -195,7 +195,7 @@ POST /api/devices
 {
   "device": {
     "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "name": "OPPO Find X6 Pro",
+    "name": "OP Find X6 Pro",
     "platform": "Android",
     "osVersion": "Android 14",
     "appVersion": "1.2.0",
@@ -268,7 +268,7 @@ POST /api/install-requests
     "updatedAt": "2024-01-15T10:30:00.000Z",
     "device": {
       "id": "device-uuid-001",
-      "name": "OPPO Find X6 Pro",
+      "name": "OP Find X6 Pro",
       "platform": "Android",
       "osVersion": "Android 14",
       "isOnline": true

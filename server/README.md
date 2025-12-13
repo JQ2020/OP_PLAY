@@ -1,8 +1,8 @@
-# OPPO Play - 应用商店 Web 应用
+# OP Play - 应用商店 Web 应用
 
 一个基于 Google Play Store 设计风格的现代化应用商店 Web 应用。采用 Next.js 16 (App Router) + Tailwind CSS v4 构建，支持应用浏览、搜索、详情查看、远程安装等完整功能。
 
-![OPPO Play](public/oppo_market_icon.png)
+![OP Play](public/oppo_market_icon.png)
 
 ## ✨ 功能特性
 

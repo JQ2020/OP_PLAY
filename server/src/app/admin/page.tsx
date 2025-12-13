@@ -246,7 +246,7 @@ export default async function AdminDashboard() {
                 },
                 {
                   action: "Device connected",
-                  details: "OPPO Find X5 Pro",
+                  details: "OP Find X5 Pro",
                   time: "3 hours ago",
                   color: "bg-green-500",
                 },

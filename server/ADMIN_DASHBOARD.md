@@ -1,4 +1,4 @@
-# Admin Dashboard - OPPO Play Store Clone
+# Admin Dashboard - OP Play Store Clone
 
 ## Overview
 

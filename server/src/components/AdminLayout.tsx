@@ -51,7 +51,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <div className="relative h-8 w-8 flex-shrink-0">
               <Image
                 src="/oppo_market_icon.png"
-                alt="OPPO Play"
+                alt="OP Play"
                 fill
                 className="object-contain"
                 priority
@@ -108,7 +108,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-ink truncate">Admin User</p>
-              <p className="text-xs text-ink-secondary truncate">admin@oppo.com</p>
+              <p className="text-xs text-ink-secondary truncate">admin@op.com</p>
             </div>
           </div>
         </div>

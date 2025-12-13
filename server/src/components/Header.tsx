@@ -31,13 +31,13 @@ export function Header() {
           <div className="relative h-10 w-10 flex-shrink-0">
             <Image
               src="/oppo_market_icon.png"
-              alt="OPPO Play"
+              alt="OP Play"
               fill
               className="object-contain"
               priority
             />
           </div>
-          <span className="hidden text-[22px] font-normal tracking-tight text-muted lg:block">OPPO Play</span>
+          <span className="hidden text-[22px] font-normal tracking-tight text-muted lg:block">OP Play</span>
         </Link>
       </div>
 

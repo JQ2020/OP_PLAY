@@ -218,8 +218,8 @@ async function main() {
 
   console.log("Creating devices...");
   const devices = [
-    { id: "oppo-find-x7", name: "OPPO Find X7 Ultra", platform: "Android", osVersion: "14", appVersion: "1.2.0", pushToken: "token-find-x7", isOnline: true, lastSeen: new Date() },
-    { id: "oppo-reno-11", name: "OPPO Reno 11 Pro", platform: "Android", osVersion: "14", appVersion: "1.2.0", pushToken: "token-reno-11", isOnline: true, lastSeen: new Date(Date.now() - 1000 * 60 * 5) },
+    { id: "op-find-x7", name: "OP Find X7 Ultra", platform: "Android", osVersion: "14", appVersion: "1.2.0", pushToken: "token-find-x7", isOnline: true, lastSeen: new Date() },
+    { id: "op-reno-11", name: "OP Reno 11 Pro", platform: "Android", osVersion: "14", appVersion: "1.2.0", pushToken: "token-reno-11", isOnline: true, lastSeen: new Date(Date.now() - 1000 * 60 * 5) },
     { id: "pixel-8-pro", name: "Google Pixel 8 Pro", platform: "Android", osVersion: "14", appVersion: "1.1.5", pushToken: "token-pixel-8", isOnline: true, lastSeen: new Date(Date.now() - 1000 * 60 * 15) },
     { id: "samsung-s24", name: "Samsung Galaxy S24 Ultra", platform: "Android", osVersion: "14", appVersion: "1.1.8", pushToken: "token-s24", isOnline: false, lastSeen: new Date(Date.now() - 1000 * 60 * 60 * 2) },
     { id: "oneplus-12", name: "OnePlus 12", platform: "Android", osVersion: "14", appVersion: "1.2.0", pushToken: "token-oneplus", isOnline: false, lastSeen: new Date(Date.now() - 1000 * 60 * 60 * 6) },
@@ -231,9 +231,9 @@ async function main() {
 
   console.log("Creating install tasks...");
   const installTasks = [
-    { deviceId: "oppo-find-x7", appTitle: "Spotify: Music and Podcasts", status: "COMPLETED", progress: 100 },
-    { deviceId: "oppo-find-x7", appTitle: "PUBG MOBILE", status: "COMPLETED", progress: 100 },
-    { deviceId: "oppo-reno-11", appTitle: "Instagram", status: "IN_PROGRESS", progress: 68 },
+    { deviceId: "op-find-x7", appTitle: "Spotify: Music and Podcasts", status: "COMPLETED", progress: 100 },
+    { deviceId: "op-find-x7", appTitle: "PUBG MOBILE", status: "COMPLETED", progress: 100 },
+    { deviceId: "op-reno-11", appTitle: "Instagram", status: "IN_PROGRESS", progress: 68 },
     { deviceId: "pixel-8-pro", appTitle: "Minecraft: Dream it, Build it!", status: "IN_PROGRESS", progress: 45 },
     { deviceId: "samsung-s24", appTitle: "Netflix", status: "QUEUED", progress: 0 },
     { deviceId: "oneplus-12", appTitle: "YouTube Kids", status: "QUEUED", progress: 0 },

@@ -28,7 +28,7 @@ export default function AdminSettingsPage() {
                 </label>
                 <input
                   type="text"
-                  defaultValue="OPPO Play"
+                  defaultValue="OP Play"
                   className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-primary-blue focus:ring-2 focus:ring-primary-blue/20"
                 />
               </div>
@@ -38,7 +38,7 @@ export default function AdminSettingsPage() {
                 </label>
                 <input
                   type="email"
-                  defaultValue="admin@oppo.com"
+                  defaultValue="admin@op.com"
                   className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-primary-blue focus:ring-2 focus:ring-primary-blue/20"
                 />
               </div>
