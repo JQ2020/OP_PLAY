@@ -16,6 +16,9 @@ object UserRepository {
     private const val TAG = "UserRepository"
     private const val PREFS_NAME = "user_prefs"
     private const val KEY_USER_ID = "user_id"
+    private const val KEY_USER_NAME = "user_name"
+    private const val KEY_USER_EMAIL = "user_email"
+    private const val KEY_USER_AVATAR = "user_avatar"
 
     private lateinit var prefs: SharedPreferences
     private var cachedUser: User? = null
@@ -33,7 +36,7 @@ object UserRepository {
             )
             val apiUser = ApiClient.api.authUser(request)
             val user = apiUser.toDomain()
-            saveUserId(user.id)
+            saveUser(user)
             cachedUser = user
             Log.d(TAG, "Login successful: ${user.name}")
             AuthResult.Success(user)
@@ -60,7 +63,7 @@ object UserRepository {
             )
             val apiUser = ApiClient.api.authUser(request)
             val user = apiUser.toDomain()
-            saveUserId(user.id)
+            saveUser(user)
             cachedUser = user
             Log.d(TAG, "Registration successful: ${user.name}")
             AuthResult.Success(user)
@@ -80,22 +83,25 @@ object UserRepository {
     suspend fun loadUser(): User? = withContext(Dispatchers.IO) {
         if (cachedUser != null) return@withContext cachedUser
 
-        val userId = getSavedUserId() ?: return@withContext null
+        val savedUser = getSavedUser() ?: return@withContext null
         try {
-            val apiUser = ApiClient.api.getUser(userId)
+            val apiUser = ApiClient.api.getUser(savedUser.id)
             cachedUser = apiUser.toDomain()
+            saveUser(cachedUser!!)
             cachedUser
         } catch (e: retrofit2.HttpException) {
             Log.e(TAG, "Failed to load user: HTTP ${e.code()}", e)
-            // Only clear userId if user not found (404)
             if (e.code() == 404) {
-                clearUserId()
+                clearUser()
+                null
+            } else {
+                cachedUser = savedUser
+                savedUser
             }
-            null
         } catch (e: Exception) {
-            // Network error - don't clear userId, user may reconnect later
-            Log.e(TAG, "Failed to load user (network error)", e)
-            null
+            Log.e(TAG, "Failed to load user (network error), using cached", e)
+            cachedUser = savedUser
+            savedUser
         }
     }
 
@@ -105,6 +111,7 @@ object UserRepository {
             val request = UserUpdateRequest(name, email, avatar)
             val apiUser = ApiClient.api.updateUser(userId, request)
             cachedUser = apiUser.toDomain()
+            saveUser(cachedUser!!)
             cachedUser
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update user", e)
@@ -114,25 +121,40 @@ object UserRepository {
 
     fun logout() {
         cachedUser = null
-        clearUserId()
+        clearUser()
     }
 
     fun getUser(): User? = cachedUser
 
-    fun hasUser(): Boolean = cachedUser != null || getSavedUserId() != null
+    fun hasUser(): Boolean = cachedUser != null || getSavedUser() != null
 
-    private fun saveUserId(id: String) {
-        prefs.edit().putString(KEY_USER_ID, id).apply()
-    }
-
-    private fun getSavedUserId(): String? {
-        if (!::prefs.isInitialized) return null
-        return prefs.getString(KEY_USER_ID, null)
-    }
-
-    private fun clearUserId() {
+    private fun saveUser(user: User) {
         if (!::prefs.isInitialized) return
-        prefs.edit().remove(KEY_USER_ID).apply()
+        prefs.edit()
+            .putString(KEY_USER_ID, user.id)
+            .putString(KEY_USER_NAME, user.name)
+            .putString(KEY_USER_EMAIL, user.email)
+            .putString(KEY_USER_AVATAR, user.avatar)
+            .apply()
+    }
+
+    private fun getSavedUser(): User? {
+        if (!::prefs.isInitialized) return null
+        val id = prefs.getString(KEY_USER_ID, null) ?: return null
+        val name = prefs.getString(KEY_USER_NAME, null) ?: return null
+        val email = prefs.getString(KEY_USER_EMAIL, null) ?: return null
+        val avatar = prefs.getString(KEY_USER_AVATAR, null)
+        return User(id, name, email, avatar, 0L)
+    }
+
+    private fun clearUser() {
+        if (!::prefs.isInitialized) return
+        prefs.edit()
+            .remove(KEY_USER_ID)
+            .remove(KEY_USER_NAME)
+            .remove(KEY_USER_EMAIL)
+            .remove(KEY_USER_AVATAR)
+            .apply()
     }
 
     private fun ApiUser.toDomain(): User {
