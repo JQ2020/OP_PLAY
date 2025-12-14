@@ -209,7 +209,7 @@ export default function DownloadPage() {
             <section className="mb-10">
               <div className="mb-6 flex items-center gap-3">
                 <Sparkles className="h-6 w-6 text-primary" />
-                <h2 className="text-2xl font-semibold text-ink dark:text-white">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
                   Why OP Play?
                 </h2>
               </div>
@@ -219,16 +219,16 @@ export default function DownloadPage() {
                   return (
                     <div
                       key={feature.title}
-                      className="group rounded-xl border border-border dark:border-gray-800 bg-white dark:bg-gray-900 p-6 transition-all hover:border-primary-blue hover:shadow-lg"
+                      className="group rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-6 transition-all hover:border-primary-blue hover:shadow-lg hover:bg-white dark:hover:bg-gray-800"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className={`mb-4 inline-flex rounded-xl ${feature.bgColor} p-3`}>
                         <Icon className={`h-6 w-6 ${feature.color}`} />
                       </div>
-                      <h3 className="mb-2 text-lg font-medium text-ink dark:text-white">
+                      <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
                         {feature.title}
                       </h3>
-                      <p className="text-sm text-ink-secondary dark:text-gray-400">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         {feature.description}
                       </p>
                     </div>
@@ -240,7 +240,7 @@ export default function DownloadPage() {
             {/* Categories Section */}
             <section className="mb-10">
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-2xl font-semibold text-ink dark:text-white">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
                   Explore Categories
                 </h2>
                 <a
@@ -255,7 +255,7 @@ export default function DownloadPage() {
                 {categories.map((cat) => (
                   <div
                     key={cat.name}
-                    className={`rounded-full bg-gradient-to-r ${cat.color} px-6 py-3 text-sm font-medium text-white shadow-md transition-all hover:scale-105 hover:shadow-lg`}
+                    className={`rounded-full bg-gradient-to-r ${cat.color} px-6 py-3 text-sm font-medium text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl`}
                   >
                     {cat.name}
                   </div>
@@ -265,23 +265,23 @@ export default function DownloadPage() {
 
             {/* Release Notes */}
             {apkInfo?.releaseNote && (
-              <section className="mb-10 rounded-xl border border-border dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-                <h2 className="mb-4 text-xl font-semibold text-ink dark:text-white">
+              <section className="mb-10 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-6">
+                <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
                   What&apos;s New in v{apkInfo.version}
                 </h2>
-                <p className="whitespace-pre-line text-sm leading-relaxed text-ink-secondary dark:text-gray-400">
+                <p className="whitespace-pre-line text-sm leading-relaxed text-gray-600 dark:text-gray-400">
                   {apkInfo.releaseNote}
                 </p>
               </section>
             )}
 
             {/* Mobile QR Section */}
-            <section className="mb-10 rounded-xl border border-border dark:border-gray-800 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 p-6 md:hidden">
+            <section className="mb-10 rounded-xl border border-purple-200 dark:border-gray-800 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/20 dark:to-blue-900/20 p-6 md:hidden">
               <div className="flex flex-col items-center text-center">
-                <h3 className="mb-4 text-lg font-semibold text-ink dark:text-white">
+                <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                   Scan QR Code to Download
                 </h3>
-                <div className="rounded-xl bg-white p-3 shadow-lg">
+                <div className="rounded-xl bg-white p-3 shadow-lg border border-gray-100">
                   {isClient && downloadUrl && (
                     <QRCodeSVG
                       value={downloadUrl}
@@ -291,18 +291,18 @@ export default function DownloadPage() {
                     />
                   )}
                 </div>
-                <p className="mt-3 text-xs text-ink-secondary dark:text-gray-400">
+                <p className="mt-3 text-xs text-gray-600 dark:text-gray-400">
                   Open camera app and scan this code
                 </p>
               </div>
             </section>
 
             {/* Installation Guide */}
-            <section className="rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 p-6">
-              <h3 className="mb-4 text-lg font-semibold text-amber-800 dark:text-amber-400">
+            <section className="rounded-xl border border-amber-300 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 p-6">
+              <h3 className="mb-4 text-lg font-semibold text-amber-900 dark:text-amber-400">
                 Installation Guide
               </h3>
-              <ol className="list-decimal list-inside space-y-2 text-sm text-amber-700 dark:text-amber-300">
+              <ol className="list-decimal list-inside space-y-2 text-sm text-amber-800 dark:text-amber-300">
                 <li>Download the APK file by clicking the button above</li>
                 <li>Open the downloaded file from your notification bar or file manager</li>
                 <li>If prompted, allow installation from unknown sources in Settings</li>
