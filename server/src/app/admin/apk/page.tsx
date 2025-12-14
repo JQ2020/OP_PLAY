@@ -228,13 +228,13 @@ export default function AdminApkPage() {
 
         {/* Instructions */}
         <div className="rounded-xl border border-amber-300 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 p-6">
-          <h3 className="mb-2 text-sm font-semibold text-amber-900 dark:text-amber-400">
+          <h3 className="mb-2 text-sm font-semibold" style={{ color: 'var(--guide-title-color, #92400e)' }}>
             How to update the APK file
           </h3>
-          <ol className="list-decimal list-inside space-y-1 text-sm text-amber-800 dark:text-amber-300">
+          <ol className="list-decimal list-inside space-y-1 text-sm" style={{ color: 'var(--guide-text-color, #78350f)' }}>
             <li>Build your Android app and generate the APK file</li>
-            <li>Rename the APK file to <code className="rounded bg-amber-200 dark:bg-amber-900/50 px-1.5 py-0.5 text-amber-900 dark:text-amber-300">op-play.apk</code></li>
-            <li>Place the file in <code className="rounded bg-amber-200 dark:bg-amber-900/50 px-1.5 py-0.5 text-amber-900 dark:text-amber-300">/public/apk/</code> directory</li>
+            <li>Rename the APK file to <code className="rounded bg-amber-200 dark:bg-amber-900/50 px-1.5 py-0.5" style={{ color: 'var(--guide-title-color, #92400e)' }}>op-play.apk</code></li>
+            <li>Place the file in <code className="rounded bg-amber-200 dark:bg-amber-900/50 px-1.5 py-0.5" style={{ color: 'var(--guide-title-color, #92400e)' }}>/public/apk/</code> directory</li>
             <li>Commit and deploy to update the download</li>
             <li>Update the version info above to reflect the changes</li>
           </ol>

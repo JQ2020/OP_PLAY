@@ -225,10 +225,10 @@ export default function DownloadPage() {
                       <div className={`mb-4 inline-flex rounded-xl ${feature.bgColor} p-3`}>
                         <Icon className={`h-6 w-6 ${feature.color}`} />
                       </div>
-                      <h3 className="mb-2 text-lg font-semibold" style={{ color: 'var(--features-title-color, #111827)' }}>
+                      <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                         {feature.title}
                       </h3>
-                      <p className="text-sm" style={{ color: 'var(--features-desc-color, #4b5563)' }}>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
                         {feature.description}
                       </p>
                     </div>
