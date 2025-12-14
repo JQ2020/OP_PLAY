@@ -123,3 +123,15 @@ model Wishlist {
 
   @@unique([userId, appId])
 }
+
+model ApkVersion {
+  id          String   @id @default(uuid())
+  version     String   @unique
+  versionCode Int      @default(1)
+  fileSize    String   @default("25 MB")
+  releaseNote String   @default("")
+  downloadUrl String   @default("/apk/op-play.apk")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

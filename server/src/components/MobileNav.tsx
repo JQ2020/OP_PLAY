@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AppWindow, Gamepad2, Baby, Search } from "lucide-react";
+import { AppWindow, Gamepad2, Baby, Download } from "lucide-react";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -11,7 +11,7 @@ export function MobileNav() {
     { href: "/", icon: AppWindow, label: "Apps" },
     { href: "/games", icon: Gamepad2, label: "Games" },
     { href: "/kids", icon: Baby, label: "Kids" },
-    { href: "/?section=categories", icon: Search, label: "Browse" },
+    { href: "/download", icon: Download, label: "Get App" },
   ];
 
   return (

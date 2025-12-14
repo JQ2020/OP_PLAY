@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   Users,
+  Package,
 } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -19,6 +20,7 @@ import Image from "next/image";
 const navItems = [
   { key: "dashboard", label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { key: "apps", label: "Apps", href: "/admin/apps", icon: AppWindow },
+  { key: "apk", label: "APK Manager", href: "/admin/apk", icon: Package },
   { key: "users", label: "Users", href: "/admin/users", icon: Users },
   { key: "devices", label: "Devices", href: "/admin/devices", icon: Smartphone },
   { key: "tasks", label: "Install Tasks", href: "/admin/tasks", icon: Download },

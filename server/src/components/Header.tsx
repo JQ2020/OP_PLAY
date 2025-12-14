@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, HelpCircle } from "lucide-react";
+import { Search, HelpCircle, Download } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
@@ -58,6 +58,13 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-2">
+        <Link
+          href="/download"
+          className="hidden md:flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all hover:bg-primary/90"
+        >
+          <Download className="h-4 w-4" />
+          Get App
+        </Link>
         <ThemeToggle />
         <Link
           href="/admin"

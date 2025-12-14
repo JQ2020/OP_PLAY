@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AppWindow, Baby, Gamepad2 } from "lucide-react";
+import { AppWindow, Baby, Gamepad2, Download } from "lucide-react";
 
 const navItems = [
   { key: "apps", label: "Apps", href: "/", icon: AppWindow },
   { key: "games", label: "Games", href: "/games", icon: Gamepad2 },
   { key: "kids", label: "Kids", href: "/kids", icon: Baby },
+  { key: "download", label: "Get App", href: "/download", icon: Download },
 ];
 
 export function Sidebar({ activeKey }: { activeKey?: string }) {
