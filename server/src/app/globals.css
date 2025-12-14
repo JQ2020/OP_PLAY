@@ -5,14 +5,14 @@
 /* Download page feature colors */
 :root {
   --features-title-color: #111827;
-  --features-desc-color: #4b5563;
+  --features-desc-color: #1f2937;
   --guide-title-color: #92400e;
   --guide-text-color: #78350f;
 }
 
 [data-theme="dark"] {
   --features-title-color: #ffffff;
-  --features-desc-color: #9ca3af;
+  --features-desc-color: #d1d5db;
   --guide-title-color: #fbbf24;
   --guide-text-color: #fcd34d;
 }
