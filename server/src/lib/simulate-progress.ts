@@ -126,7 +126,7 @@ export function calculateSimulatedProgress(
  * 范围：8-15秒
  */
 export function generateSimulateDuration(): number {
-  return 8000 + Math.floor(Math.random() * 7000);
+  return 15000 + Math.floor(Math.random() * 10000);
 }
 
 /**
