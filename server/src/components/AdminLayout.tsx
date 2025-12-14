@@ -12,8 +12,11 @@ import {
   X,
   Users,
   Package,
+  Lock,
+  KeyRound,
+  ShieldAlert,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import Image from "next/image";
 
@@ -27,9 +30,116 @@ const navItems = [
   { key: "settings", label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
+const ADMIN_PASSWORD = "oppo";
+const AUTH_KEY = "op_admin_auth";
+
+function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === ADMIN_PASSWORD) {
+      sessionStorage.setItem(AUTH_KEY, "authenticated");
+      onSuccess();
+    } else {
+      setError(true);
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+      setPassword("");
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-4">
+      <div
+        className={`w-full max-w-md rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl ${
+          shake ? "animate-[shake_0.5s_ease-in-out]" : ""
+        }`}
+      >
+        <div className="flex flex-col items-center text-center mb-8">
+          <div className="mb-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 p-4">
+            <ShieldAlert className="h-10 w-10 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">
+            Hold up, stranger! 🕵️
+          </h1>
+          <p className="text-gray-300 text-sm">
+            This is the VIP area. Only cool kids with the secret password can enter.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="relative">
+            <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError(false);
+              }}
+              placeholder="Whisper the magic word..."
+              className="w-full rounded-xl bg-white/10 border border-white/20 pl-12 pr-4 py-3.5 text-white placeholder:text-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              autoFocus
+            />
+          </div>
+
+          {error && (
+            <p className="text-center text-sm text-pink-400 animate-pulse">
+              Nope! That&apos;s not it. Try again, hacker wannabe! 😜
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 py-3.5 text-sm font-semibold text-white transition-all hover:from-purple-500 hover:to-pink-500 hover:shadow-lg hover:shadow-purple-500/30 active:scale-[0.98]"
+          >
+            <Lock className="inline-block mr-2 h-4 w-4" />
+            Let me in!
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-xs text-gray-500">
+          Hint: It rhymes with &quot;hippo&quot; but starts with &quot;o&quot; 🦛
+        </p>
+      </div>
+
+      <style jsx>{`
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+          20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const auth = sessionStorage.getItem(AUTH_KEY);
+    setIsAuthenticated(auth === "authenticated");
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-900">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-500 border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <PasswordGate onSuccess={() => setIsAuthenticated(true)} />;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
