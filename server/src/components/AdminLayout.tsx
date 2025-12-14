@@ -16,9 +16,10 @@ import {
   KeyRound,
   ShieldAlert,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import Image from "next/image";
+import { useUser } from "@/contexts/UserContext";
 
 const navItems = [
   { key: "dashboard", label: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -31,7 +32,30 @@ const navItems = [
 ];
 
 const ADMIN_PASSWORD = "oppo";
-const AUTH_KEY = "op_admin_auth";
+
+function LoginRequiredGate() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-4">
+      <div className="w-full max-w-md rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl text-center">
+        <div className="mb-4 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 p-4 w-fit">
+          <Users className="h-10 w-10 text-white" />
+        </div>
+        <h1 className="text-2xl font-bold text-white mb-2">
+          请先登录账号 🔐
+        </h1>
+        <p className="text-gray-300 text-sm mb-6">
+          管理后台仅对已登录用户开放，请先登录您的账号~
+        </p>
+        <a
+          href="/"
+          className="inline-block w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 py-3.5 text-sm font-semibold text-white transition-all hover:from-blue-500 hover:to-cyan-500 hover:shadow-lg hover:shadow-blue-500/30 active:scale-[0.98]"
+        >
+          去首页登录
+        </a>
+      </div>
+    </div>
+  );
+}
 
 function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   const [password, setPassword] = useState("");
@@ -41,7 +65,6 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === ADMIN_PASSWORD) {
-      sessionStorage.setItem(AUTH_KEY, "authenticated");
       onSuccess();
     } else {
       setError(true);
@@ -121,13 +144,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const auth = sessionStorage.getItem(AUTH_KEY);
-    setIsAuthenticated(auth === "authenticated");
-    setIsLoading(false);
-  }, []);
+  const { isLoggedIn, isLoading } = useUser();
 
   if (isLoading) {
     return (
@@ -135,6 +152,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-500 border-t-transparent" />
       </div>
     );
+  }
+
+  if (!isLoggedIn) {
+    return <LoginRequiredGate />;
   }
 
   if (!isAuthenticated) {
