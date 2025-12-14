@@ -63,10 +63,10 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
             <ShieldAlert className="h-10 w-10 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">
-            Hold up, stranger! 🕵️
+            慢着，陌生人！🕵️
           </h1>
           <p className="text-gray-300 text-sm">
-            This is the VIP area. Only cool kids with the secret password can enter.
+            这里是VIP专区，只有知道神秘暗号的人才能进入哦~
           </p>
         </div>
 
@@ -80,7 +80,7 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
                 setPassword(e.target.value);
                 setError(false);
               }}
-              placeholder="Whisper the magic word..."
+              placeholder="悄悄告诉我暗号..."
               className="w-full rounded-xl bg-white/10 border border-white/20 pl-12 pr-4 py-3.5 text-white placeholder:text-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
               autoFocus
             />
@@ -88,7 +88,7 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
 
           {error && (
             <p className="text-center text-sm text-pink-400 animate-pulse">
-              Nope! That&apos;s not it. Try again, hacker wannabe! 😜
+              不对哦！再试试吧，小黑客！😜
             </p>
           )}
 
@@ -97,12 +97,12 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
             className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 py-3.5 text-sm font-semibold text-white transition-all hover:from-purple-500 hover:to-pink-500 hover:shadow-lg hover:shadow-purple-500/30 active:scale-[0.98]"
           >
             <Lock className="inline-block mr-2 h-4 w-4" />
-            Let me in!
+            让我进去！
           </button>
         </form>
 
         <p className="mt-6 text-center text-xs text-gray-500">
-          Hint: It rhymes with &quot;hippo&quot; but starts with &quot;o&quot; 🦛
+          提示：某手机品牌，四个字母，全小写 📱
         </p>
       </div>
 
