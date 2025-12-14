@@ -919,22 +919,28 @@ private fun TopHeaderSearch(
                     .size(32.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
-            Spacer(Modifier.width(12.dp))
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { }
-            ) {
-                if (query.isEmpty()) {
+            Spacer(Modifier.width(8.dp))
+            TextField(
+                value = query,
+                onValueChange = onQueryChange,
+                placeholder = {
                     Text(
                         "Search for apps & games",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 16.sp
                     )
-                } else {
-                    Text(query, fontSize = 16.sp)
-                }
-            }
+                },
+                singleLine = true,
+                modifier = Modifier.weight(1f),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp)
+            )
             Box(
                 modifier = Modifier
                     .size(36.dp)
