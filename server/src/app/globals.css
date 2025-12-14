@@ -2,6 +2,17 @@
 
 @plugin "tailwindcss-animate";
 
+/* Download page feature colors */
+:root {
+  --features-title-color: #111827;
+  --features-desc-color: #4b5563;
+}
+
+[data-theme="dark"] {
+  --features-title-color: #ffffff;
+  --features-desc-color: #9ca3af;
+}
+
 @theme inline {
   --color-primary: #01875f;
   --color-primary-blue: #1a73e8;

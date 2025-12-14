@@ -208,8 +208,8 @@ export default function DownloadPage() {
             {/* Features Grid */}
             <section className="mb-10">
               <div className="mb-6 flex items-center gap-3">
-                <Sparkles className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                <Sparkles className="h-6 w-6 text-purple-600" />
+                <h2 className="text-2xl font-semibold" style={{ color: 'var(--features-title-color, #111827)' }}>
                   Why OP Play?
                 </h2>
               </div>
@@ -219,16 +219,16 @@ export default function DownloadPage() {
                   return (
                     <div
                       key={feature.title}
-                      className="group rounded-xl border-2 border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm transition-all hover:border-primary-blue hover:shadow-lg"
+                      className="group rounded-xl border-2 border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-primary-blue hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className={`mb-4 inline-flex rounded-xl ${feature.bgColor} p-3`}>
                         <Icon className={`h-6 w-6 ${feature.color}`} />
                       </div>
-                      <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                      <h3 className="mb-2 text-lg font-semibold" style={{ color: 'var(--features-title-color, #111827)' }}>
                         {feature.title}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm" style={{ color: 'var(--features-desc-color, #4b5563)' }}>
                         {feature.description}
                       </p>
                     </div>
