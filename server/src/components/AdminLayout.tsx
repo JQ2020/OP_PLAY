@@ -16,7 +16,7 @@ import {
   KeyRound,
   ShieldAlert,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import Image from "next/image";
 import { useUser } from "@/contexts/UserContext";
@@ -32,6 +32,7 @@ const navItems = [
 ];
 
 const ADMIN_PASSWORD = "oppo";
+const AUTH_KEY = "op_admin_auth";
 
 function LoginRequiredGate() {
   return (
@@ -65,6 +66,7 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === ADMIN_PASSWORD) {
+      sessionStorage.setItem(AUTH_KEY, "authenticated");
       onSuccess();
     } else {
       setError(true);
@@ -123,10 +125,6 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
             让我进去！
           </button>
         </form>
-
-        <p className="mt-6 text-center text-xs text-gray-500">
-          提示：某手机品牌，四个字母，全小写 📱
-        </p>
       </div>
 
       <style jsx>{`
@@ -144,9 +142,16 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const { isLoggedIn, isLoading } = useUser();
 
-  if (isLoading) {
+  useEffect(() => {
+    const auth = sessionStorage.getItem(AUTH_KEY);
+    setIsAuthenticated(auth === "authenticated");
+    setAuthChecked(true);
+  }, []);
+
+  if (isLoading || !authChecked) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-500 border-t-transparent" />
