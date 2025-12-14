@@ -128,7 +128,7 @@ export default async function Home({ searchParams }: Props) {
           )}
         </div>
         {apps.length > 0 ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {apps.map((app, index) => (
               <AppCard key={app.id} app={app} index={index} />
             ))}
@@ -304,7 +304,7 @@ export default async function Home({ searchParams }: Props) {
             View charts
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {editorsChoice.map((app, index) => (
             <AppCard key={app.id} app={app} index={index} />
           ))}
@@ -340,7 +340,7 @@ export default async function Home({ searchParams }: Props) {
               <ArrowRight size={20} className="text-ink-secondary" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {recommendedApps.map((app, index) => (
               <AppCard key={app.id} app={app} index={index} />
             ))}
@@ -357,7 +357,7 @@ export default async function Home({ searchParams }: Props) {
               <ArrowRight size={20} className="text-ink-secondary" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {topRatedApps.map((app, index) => (
               <AppCard key={app.id} app={app} index={index} />
             ))}
@@ -374,7 +374,7 @@ export default async function Home({ searchParams }: Props) {
               <ArrowRight size={20} className="text-ink-secondary" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {newApps.map((app, index) => (
               <AppCard key={app.id} app={app} index={index} />
             ))}
@@ -395,7 +395,7 @@ export default async function Home({ searchParams }: Props) {
                 <ArrowRight size={20} className="text-ink-secondary" />
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {gamesSpotlight.map((app, index) => (
                 <AppCard key={app.id} app={app} index={index} />
               ))}

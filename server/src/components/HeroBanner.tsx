@@ -44,7 +44,7 @@ export function HeroBanner({
   }, []);
 
   return (
-    <section className="relative rounded-2xl p-8 shadow-sm overflow-hidden">
+    <section className="relative rounded-2xl p-4 md:p-8 shadow-sm overflow-hidden">
       <div
         className="absolute inset-0 opacity-80"
         style={{
@@ -54,7 +54,7 @@ export function HeroBanner({
         }}
       />
 
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+      <div className="absolute inset-0 opacity-20 pointer-events-none hidden md:block">
         {particles.map((particle) => (
           <motion.div
             key={particle.id}
@@ -96,7 +96,7 @@ export function HeroBanner({
               ease: "easeInOut",
             }}
           >
-            <Sparkles className="h-6 w-6 text-primary" />
+            <Sparkles className="h-5 w-5 md:h-6 md:w-6 text-primary" />
           </motion.div>
           <div>
             <motion.p
@@ -108,7 +108,7 @@ export function HeroBanner({
               {subtitle}
             </motion.p>
             <motion.h2
-              className="text-2xl font-normal text-ink"
+              className="text-xl md:text-2xl font-normal text-ink"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}

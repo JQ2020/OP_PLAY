@@ -137,7 +137,7 @@ export default async function KidsPage({ searchParams }: Props) {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {sorted.map((app) => (
               <AppCard key={app.id} app={app} />
             ))}
