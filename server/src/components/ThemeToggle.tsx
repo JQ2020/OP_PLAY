@@ -16,14 +16,14 @@ export function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return <div className="w-9 h-9" />; // Placeholder
+  if (!mounted) return <div className="hidden lg:block w-9 h-9" />; // Placeholder, hidden on mobile/tablet
 
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="relative h-9 w-9 rounded-full transition-colors hover:bg-surface-variant"
+      className="hidden lg:flex relative h-9 w-9 rounded-full transition-colors hover:bg-surface-variant"
       aria-label="Toggle theme"
     >
       <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
