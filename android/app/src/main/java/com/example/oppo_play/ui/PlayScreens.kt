@@ -95,7 +95,7 @@ fun AppsHomeScreen(navController: NavController) {
     ) {
         item { Spacer(modifier = Modifier.height(8.dp)) }
         item { PlayHeader(title = "Apps") }
-        item { PlaySearchBar(hint = "Search apps & games") }
+        item { PlaySearchBar(hint = "Search for apps") }
         item { CategoryRow(labels = listOf("For you", "Top charts", "Kids", "Premium")) }
 
         item {
