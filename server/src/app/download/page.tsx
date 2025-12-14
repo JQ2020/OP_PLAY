@@ -208,7 +208,7 @@ export default function DownloadPage() {
             {/* Features Grid */}
             <section className="mb-10">
               <div className="mb-6 flex items-center gap-3">
-                <Sparkles className="h-6 w-6 text-primary" />
+                <Sparkles className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                 <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
                   Why OP Play?
                 </h2>
@@ -219,13 +219,13 @@ export default function DownloadPage() {
                   return (
                     <div
                       key={feature.title}
-                      className="group rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-6 transition-all hover:border-primary-blue hover:shadow-lg hover:bg-white dark:hover:bg-gray-800"
+                      className="group rounded-xl border-2 border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm transition-all hover:border-primary-blue hover:shadow-lg"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className={`mb-4 inline-flex rounded-xl ${feature.bgColor} p-3`}>
                         <Icon className={`h-6 w-6 ${feature.color}`} />
                       </div>
-                      <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
+                      <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                         {feature.title}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -298,11 +298,11 @@ export default function DownloadPage() {
             </section>
 
             {/* Installation Guide */}
-            <section className="rounded-xl border border-amber-300 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 p-6">
-              <h3 className="mb-4 text-lg font-semibold text-amber-900 dark:text-amber-400">
+            <section className="rounded-xl border-2 border-amber-400 dark:border-amber-900/50 bg-amber-100 dark:bg-amber-900/20 p-6">
+              <h3 className="mb-4 text-lg font-bold text-amber-900 dark:text-amber-400">
                 Installation Guide
               </h3>
-              <ol className="list-decimal list-inside space-y-2 text-sm text-amber-800 dark:text-amber-300">
+              <ol className="list-decimal list-inside space-y-2 text-sm font-medium text-amber-900 dark:text-amber-300">
                 <li>Download the APK file by clicking the button above</li>
                 <li>Open the downloaded file from your notification bar or file manager</li>
                 <li>If prompted, allow installation from unknown sources in Settings</li>
