@@ -312,16 +312,22 @@ export default async function Home({ searchParams }: Props) {
       </section>
     );
   } else {
-    const recommendedApps = sortByDownloads(filteredApps).slice(0, 6);
+    const recommendedApps = sortByDownloads(filteredApps).slice(0, 12);
     const topRatedApps = [...filteredApps]
       .sort((a, b) => b.rating - a.rating)
-      .slice(0, 6);
+      .slice(0, 12);
     const newApps = [...filteredApps]
       .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
-      .slice(0, 6);
+      .slice(0, 12);
     const gamesSpotlight = filteredApps
       .filter((app) => app.category === "Games")
-      .slice(0, 6);
+      .slice(0, 12);
+
+    const getResponsiveClass = (index: number) => {
+      if (index >= 10) return "hidden xl:block";
+      if (index >= 8) return "hidden lg:block";
+      return "";
+    };
 
     content = (
       <div className="flex flex-col gap-10">
@@ -342,7 +348,9 @@ export default async function Home({ searchParams }: Props) {
           </div>
           <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {recommendedApps.map((app, index) => (
-              <AppCard key={app.id} app={app} index={index} />
+              <div key={app.id} className={getResponsiveClass(index)}>
+                <AppCard app={app} index={index} />
+              </div>
             ))}
           </div>
         </section>
@@ -359,7 +367,9 @@ export default async function Home({ searchParams }: Props) {
           </div>
           <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {topRatedApps.map((app, index) => (
-              <AppCard key={app.id} app={app} index={index} />
+              <div key={app.id} className={getResponsiveClass(index)}>
+                <AppCard app={app} index={index} />
+              </div>
             ))}
           </div>
         </section>
@@ -376,7 +386,9 @@ export default async function Home({ searchParams }: Props) {
           </div>
           <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {newApps.map((app, index) => (
-              <AppCard key={app.id} app={app} index={index} />
+              <div key={app.id} className={getResponsiveClass(index)}>
+                <AppCard app={app} index={index} />
+              </div>
             ))}
           </div>
         </section>
@@ -397,7 +409,9 @@ export default async function Home({ searchParams }: Props) {
             </div>
             <div className="grid grid-cols-4 gap-x-2 gap-y-4 md:gap-x-4 md:gap-y-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {gamesSpotlight.map((app, index) => (
-                <AppCard key={app.id} app={app} index={index} />
+                <div key={app.id} className={getResponsiveClass(index)}>
+                  <AppCard app={app} index={index} />
+                </div>
               ))}
             </div>
           </section>
