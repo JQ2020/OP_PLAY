@@ -298,11 +298,11 @@ export default function DownloadPage() {
             </section>
 
             {/* Installation Guide */}
-            <section className="rounded-xl border-2 border-amber-400 dark:border-amber-900/50 bg-amber-100 dark:bg-amber-900/20 p-6">
-              <h3 className="mb-4 text-lg font-bold text-amber-900 dark:text-amber-400">
+            <section className="rounded-xl border-2 border-amber-400 bg-amber-100 dark:border-amber-900/50 dark:bg-amber-900/20 p-6">
+              <h3 className="mb-4 text-lg font-bold" style={{ color: 'var(--guide-title-color, #92400e)' }}>
                 Installation Guide
               </h3>
-              <ol className="list-decimal list-inside space-y-2 text-sm font-medium text-amber-900 dark:text-amber-300">
+              <ol className="list-decimal list-inside space-y-2 text-sm font-medium" style={{ color: 'var(--guide-text-color, #78350f)' }}>
                 <li>Download the APK file by clicking the button above</li>
                 <li>Open the downloaded file from your notification bar or file manager</li>
                 <li>If prompted, allow installation from unknown sources in Settings</li>

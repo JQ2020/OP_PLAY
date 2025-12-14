@@ -6,11 +6,15 @@
 :root {
   --features-title-color: #111827;
   --features-desc-color: #4b5563;
+  --guide-title-color: #92400e;
+  --guide-text-color: #78350f;
 }
 
 [data-theme="dark"] {
   --features-title-color: #ffffff;
   --features-desc-color: #9ca3af;
+  --guide-title-color: #fbbf24;
+  --guide-text-color: #fcd34d;
 }
 
 @theme inline {
