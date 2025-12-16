@@ -163,8 +163,11 @@ object UserRepository {
             name = name,
             email = email,
             avatar = avatar?.let { url ->
-                if (url.startsWith("http")) url
-                else ApiClient.BASE_URL.trimEnd('/') + url
+                when {
+                    url.startsWith("data:") -> url
+                    url.startsWith("http") -> url
+                    else -> ApiClient.BASE_URL.trimEnd('/') + url
+                }
             },
             createdAt = AppRepository.parseIsoMillis(createdAt)
         )
