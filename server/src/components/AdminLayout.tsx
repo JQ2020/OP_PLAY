@@ -36,20 +36,20 @@ const AUTH_KEY = "op_admin_auth";
 
 function LoginRequiredGate() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-4">
-      <div className="w-full max-w-md rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl text-center">
-        <div className="mb-4 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 p-4 w-fit">
-          <Users className="h-10 w-10 text-white" />
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md rounded-2xl bg-white dark:bg-surface border border-border-light p-8 shadow-lg text-center">
+        <div className="mb-4 mx-auto rounded-full bg-[#e3f2fd] dark:bg-primary-blue/20 p-4 w-fit">
+          <Users className="h-10 w-10 text-primary-blue" />
         </div>
-        <h1 className="text-2xl font-bold text-white mb-2">
-          请先登录账号 🔐
+        <h1 className="text-2xl font-bold text-ink mb-2">
+          请先登录账号
         </h1>
-        <p className="text-gray-300 text-sm mb-6">
-          管理后台仅对已登录用户开放，请先登录您的账号~
+        <p className="text-ink-secondary text-sm mb-6">
+          管理后台仅对已登录用户开放，请先登录您的账号
         </p>
         <a
           href="/"
-          className="inline-block w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 py-3.5 text-sm font-semibold text-white transition-all hover:from-blue-500 hover:to-cyan-500 hover:shadow-lg hover:shadow-blue-500/30 active:scale-[0.98]"
+          className="inline-block w-full rounded-xl bg-primary-blue py-3.5 text-sm font-semibold text-white transition-all hover:bg-primary-blue/90 active:scale-[0.98]"
         >
           去首页登录
         </a>
@@ -77,27 +77,27 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div
-        className={`w-full max-w-md rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl ${
+        className={`w-full max-w-md rounded-2xl bg-white dark:bg-surface border border-border-light p-8 shadow-lg ${
           shake ? "animate-[shake_0.5s_ease-in-out]" : ""
         }`}
       >
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="mb-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 p-4">
-            <ShieldAlert className="h-10 w-10 text-white" />
+          <div className="mb-4 rounded-full bg-[#e3f2fd] dark:bg-primary-blue/20 p-4">
+            <ShieldAlert className="h-10 w-10 text-primary-blue" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">
-            慢着，陌生人！🕵️
+          <h1 className="text-2xl font-bold text-ink mb-2">
+            管理员验证
           </h1>
-          <p className="text-gray-300 text-sm">
-            这里是VIP专区，只有知道神秘暗号的人才能进入哦~
+          <p className="text-ink-secondary text-sm">
+            请输入管理密码以访问后台
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-ink-tertiary" />
             <input
               type="password"
               value={password}
@@ -105,24 +105,24 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
                 setPassword(e.target.value);
                 setError(false);
               }}
-              placeholder="悄悄告诉我暗号..."
-              className="w-full rounded-xl bg-white/10 border border-white/20 pl-12 pr-4 py-3.5 text-white placeholder:text-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              placeholder="请输入密码..."
+              className="w-full rounded-xl bg-surface-variant border border-border pl-12 pr-4 py-3.5 text-ink placeholder:text-ink-tertiary focus:border-primary-blue focus:outline-none focus:ring-2 focus:ring-primary-blue/20"
               autoFocus
             />
           </div>
 
           {error && (
-            <p className="text-center text-sm text-pink-400 animate-pulse">
-              不对哦！再试试吧，小黑客！😜
+            <p className="text-center text-sm text-red-500 dark:text-red-400">
+              密码错误，请重试
             </p>
           )}
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 py-3.5 text-sm font-semibold text-white transition-all hover:from-purple-500 hover:to-pink-500 hover:shadow-lg hover:shadow-purple-500/30 active:scale-[0.98]"
+            className="w-full rounded-xl bg-primary-blue py-3.5 text-sm font-semibold text-white transition-all hover:bg-primary-blue/90 active:scale-[0.98]"
           >
             <Lock className="inline-block mr-2 h-4 w-4" />
-            让我进去！
+            进入后台
           </button>
         </form>
       </div>
@@ -153,8 +153,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   if (isLoading || !authChecked) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-500 border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-blue border-t-transparent" />
       </div>
     );
   }

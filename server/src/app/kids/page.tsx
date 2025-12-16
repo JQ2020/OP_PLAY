@@ -78,7 +78,7 @@ export default async function KidsPage({ searchParams }: Props) {
     <main className="flex min-h-screen bg-white dark:bg-background transition-colors">
       <Sidebar activeKey="kids" />
 
-      <section className="flex flex-1 flex-col gap-6 px-6 py-6 lg:px-10 lg:py-8">
+      <section className="flex flex-1 flex-col gap-6 px-6 py-6 pb-24 lg:px-10 lg:py-8 lg:pb-8">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h1 className="text-3xl font-normal text-ink">Kids</h1>

@@ -25,7 +25,7 @@ export default function Loading() {
         </aside>
 
         {/* Main Content Skeleton */}
-        <main className="flex-1 overflow-y-auto bg-white dark:bg-background px-6 py-6 lg:px-10 lg:py-8">
+        <main className="flex-1 overflow-y-auto bg-white dark:bg-background px-6 py-6 pb-24 lg:px-10 lg:py-8 lg:pb-8">
           <div className="mx-auto max-w-[1400px] flex flex-col gap-6">
             {/* Section Chips Skeleton */}
             <div className="flex items-center gap-2 overflow-x-auto pb-2">
