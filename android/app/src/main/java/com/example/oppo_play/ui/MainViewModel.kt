@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 sealed interface AppsUiState {
     data object Loading : AppsUiState
     data class Error(val message: String) : AppsUiState
-    data class Success(val apps: List<StoreApp>) : AppsUiState
+    data class Success(val apps: List<StoreApp>, val isFromCache: Boolean = false) : AppsUiState
 }
 
 class MainViewModel : ViewModel() {
@@ -24,12 +24,21 @@ class MainViewModel : ViewModel() {
     }
 
     fun loadApps() {
-        uiState = AppsUiState.Loading
+        val cached = AppRepository.getCachedApps()
+        if (cached != null && cached.isNotEmpty()) {
+            uiState = AppsUiState.Success(cached, isFromCache = true)
+        } else {
+            uiState = AppsUiState.Loading
+        }
+
         viewModelScope.launch {
-            uiState = try {
-                AppsUiState.Success(AppRepository.fetchAllApps())
+            try {
+                val apps = AppRepository.fetchAllApps()
+                uiState = AppsUiState.Success(apps, isFromCache = false)
             } catch (e: Exception) {
-                AppsUiState.Error(e.message ?: "Failed to load apps")
+                if (uiState !is AppsUiState.Success) {
+                    uiState = AppsUiState.Error(e.message ?: "Failed to load apps")
+                }
             }
         }
     }
