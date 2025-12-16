@@ -95,6 +95,15 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    fun updateAvatar(avatar: String) {
+        viewModelScope.launch {
+            val updated = UserRepository.updateUser(avatar = avatar)
+            if (updated != null) {
+                user = updated
+            }
+        }
+    }
+
     fun logout() {
         // Clear user state immediately for UI update
         UserRepository.logout()
