@@ -4,8 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -168,12 +170,27 @@ private fun uriToBase64DataUrl(context: android.content.Context, uri: Uri): Stri
     }
 }
 
+private fun parseBase64DataUrl(dataUrl: String): Bitmap? {
+    if (!dataUrl.startsWith("data:image")) return null
+    return try {
+        val base64Part = dataUrl.substringAfter("base64,")
+        val bytes = Base64.decode(base64Part, Base64.DEFAULT)
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    } catch (e: Exception) {
+        null
+    }
+}
+
 @Composable
 private fun ProfileHeader(
     user: User,
     onEditClick: () -> Unit,
     onAvatarClick: () -> Unit
 ) {
+    val avatarBitmap = remember(user.avatar) {
+        user.avatar?.let { parseBase64DataUrl(it) }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,20 +206,31 @@ private fun ProfileHeader(
                     .clickable(onClick = onAvatarClick),
                 contentAlignment = Alignment.Center
             ) {
-                if (user.avatar != null) {
-                    AsyncImage(
-                        model = user.avatar,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Text(
-                        text = user.name.firstOrNull()?.uppercase() ?: "?",
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
+                when {
+                    avatarBitmap != null -> {
+                        Image(
+                            bitmap = avatarBitmap.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                    user.avatar != null -> {
+                        AsyncImage(
+                            model = user.avatar,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                    else -> {
+                        Text(
+                            text = user.name.firstOrNull()?.uppercase() ?: "?",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
             Surface(
