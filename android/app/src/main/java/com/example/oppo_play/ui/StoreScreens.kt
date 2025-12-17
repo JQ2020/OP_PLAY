@@ -64,6 +64,11 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import com.example.oppo_play.R
 import com.example.oppo_play.model.StoreApp
 import com.example.oppo_play.ui.components.ReviewsSection
@@ -979,29 +984,66 @@ private fun TopHeaderSearch(
                 }
             }
             Spacer(Modifier.width(4.dp))
+            val avatarBitmap = remember(user?.avatar) {
+                user?.avatar?.let { parseBase64DataUrl(it) }
+            }
             Surface(
                 modifier = Modifier
                     .size(32.dp)
                     .clickable(onClick = onProfileClick),
-                color = if (user != null) MaterialTheme.colorScheme.primaryContainer
-                       else MaterialTheme.colorScheme.surfaceVariant,
+                color = if (user != null && avatarBitmap == null && user.avatar == null)
+                    MaterialTheme.colorScheme.primaryContainer
+                else if (user == null)
+                    MaterialTheme.colorScheme.surfaceVariant
+                else Color.Transparent,
                 shape = CircleShape
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    if (user != null) {
-                        Text(
-                            user.name.firstOrNull()?.uppercase() ?: "?",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp
-                        )
-                    } else {
-                        Icon(
-                            Icons.Outlined.Person,
-                            contentDescription = "Sign in",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(18.dp)
-                        )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    when {
+                        user != null && avatarBitmap != null -> {
+                            Image(
+                                bitmap = avatarBitmap.asImageBitmap(),
+                                contentDescription = "Profile",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        user != null && user.avatar != null -> {
+                            AsyncImage(
+                                model = user.avatar,
+                                contentDescription = "Profile",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        user != null -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.primaryContainer),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    user.name.firstOrNull()?.uppercase() ?: "?",
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp
+                                )
+                            }
+                        }
+                        else -> {
+                            Icon(
+                                Icons.Outlined.Person,
+                                contentDescription = "Sign in",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -1710,3 +1752,14 @@ private fun parseDownloads(value: String): Long {
 
 private fun sortByDownloads(apps: List<StoreApp>): List<StoreApp> =
     apps.sortedWith(compareByDescending<StoreApp> { parseDownloads(it.downloads) }.thenByDescending { it.rating })
+
+private fun parseBase64DataUrl(dataUrl: String): Bitmap? {
+    if (!dataUrl.startsWith("data:image")) return null
+    return try {
+        val base64Part = dataUrl.substringAfter("base64,")
+        val bytes = Base64.decode(base64Part, Base64.DEFAULT)
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    } catch (e: Exception) {
+        null
+    }
+}
