@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Play Store Lite 部署脚本
+# O Play 部署脚本
 # 使用方法: ./deploy.sh
 
 set -e
 
-echo "🚀 开始部署 Play Store Lite..."
+echo "🚀 开始部署 O Play..."
 
 # 配置变量
 APP_DIR="/var/www/play-store"
-REPO_URL="https://github.com/JQ2020/OP_PLAY.git"
+REPO_URL="https://github.com/JQ2020/O_PLAY.git"
 
 # 检查是否为 root 用户
 if [ "$EUID" -ne 0 ]; then

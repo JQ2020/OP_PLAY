@@ -918,13 +918,13 @@ private fun TopHeaderSearch(
                 .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_op_play),
-                contentDescription = "OP Play",
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(RoundedCornerShape(8.dp))
-            )
+	            Image(
+	                painter = painterResource(id = R.drawable.ic_op_play),
+	                contentDescription = "O Play",
+	                modifier = Modifier
+	                    .size(32.dp)
+	                    .clip(RoundedCornerShape(8.dp))
+	            )
             Spacer(Modifier.width(8.dp))
             Box(
                 modifier = Modifier

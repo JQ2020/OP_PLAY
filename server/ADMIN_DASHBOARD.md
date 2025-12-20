@@ -1,4 +1,4 @@
-# Admin Dashboard - OP Play Store Clone
+# Admin Dashboard - O Play Store Clone
 
 ## Overview
 

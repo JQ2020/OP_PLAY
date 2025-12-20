@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       versionCode: versionCode || 1,
       fileSize: fileSize || "25 MB",
       releaseNote: releaseNote || "",
-      downloadUrl: downloadUrl || "/apk/op-play.apk",
+      downloadUrl: downloadUrl || "/apk/o-play.apk",
       isActive: true,
     },
   });

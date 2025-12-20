@@ -189,7 +189,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <div className="relative h-8 w-8 flex-shrink-0">
               <Image
                 src="/oppo_market_icon.png"
-                alt="OP Play"
+                alt="O Play"
                 fill
                 className="object-contain"
                 priority

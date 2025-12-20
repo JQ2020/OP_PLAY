@@ -102,7 +102,7 @@ export default function DownloadPage() {
 
   useEffect(() => {
     if (isClient) {
-      const apkPath = apkInfo?.downloadUrl || "/apk/op-play.apk";
+      const apkPath = apkInfo?.downloadUrl || "/apk/o-play.apk";
       setDownloadUrl(`${window.location.origin}${apkPath}`);
     }
   }, [isClient, apkInfo]);
@@ -134,7 +134,7 @@ export default function DownloadPage() {
                     <div className="relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-white/30 shadow-2xl">
                       <Image
                         src="/oppo_market_icon.png"
-                        alt="OP Play"
+                        alt="O Play"
                         fill
                         className="object-contain bg-white"
                         priority
@@ -142,7 +142,7 @@ export default function DownloadPage() {
                     </div>
                     <div>
                       <h1 className="text-3xl font-bold text-white md:text-4xl">
-                        OP Play
+                        O Play
                       </h1>
                       <p className="mt-1 text-sm text-white/80">
                         Your Premium App Store
@@ -176,7 +176,7 @@ export default function DownloadPage() {
                   )}
 
                   <a
-                    href={apkInfo?.downloadUrl || "/apk/op-play.apk"}
+                    href={apkInfo?.downloadUrl || "/apk/o-play.apk"}
                     download
                     className="inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 text-lg font-semibold text-purple-600 shadow-xl transition-all hover:scale-105 hover:shadow-2xl active:scale-100"
                   >
@@ -210,7 +210,7 @@ export default function DownloadPage() {
               <div className="mb-6 flex items-center gap-3">
                 <Sparkles className="h-6 w-6 text-purple-600" />
                 <h2 className="text-2xl font-semibold" style={{ color: 'var(--features-title-color, #111827)' }}>
-                  Why OP Play?
+                  Why O Play?
                 </h2>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -307,7 +307,7 @@ export default function DownloadPage() {
                 <li>Open the downloaded file from your notification bar or file manager</li>
                 <li>If prompted, allow installation from unknown sources in Settings</li>
                 <li>Tap &quot;Install&quot; and wait for the installation to complete</li>
-                <li>Open OP Play and start exploring amazing apps!</li>
+                <li>Open O Play and start exploring amazing apps!</li>
               </ol>
             </section>
           </div>

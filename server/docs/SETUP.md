@@ -1,6 +1,6 @@
-# OP Play - 环境搭建与运行指南
+# O Play - 环境搭建与运行指南
 
-本文档详细介绍如何从零开始搭建开发环境并运行 OP Play 项目。
+本文档详细介绍如何从零开始搭建开发环境并运行 O Play 项目。
 
 ## 目录
 - [环境要求](#环境要求)
@@ -46,8 +46,8 @@
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/JQ2020/OP_PLAY.git
-cd play-store-lite
+git clone https://github.com/JQ2020/O_PLAY.git o-play
+cd o-play/server
 
 # 2. 安装依赖
 npm install
@@ -73,10 +73,10 @@ npm run dev
 
 ```bash
 # 克隆项目到本地
-git clone https://github.com/JQ2020/OP_PLAY.git
+git clone https://github.com/JQ2020/O_PLAY.git o-play
 
 # 进入项目目录
-cd play-store-lite
+cd o-play/server
 ```
 
 如果你没有 Git，也可以直接从 GitHub 下载 ZIP 文件并解压。
@@ -657,7 +657,7 @@ npx prisma migrate dev --name [迁移名称]
 
 ### 问题反馈
 如果遇到问题，请在 GitHub Issues 提交：
-https://github.com/JQ2020/OP_PLAY/issues
+https://github.com/JQ2020/O_PLAY/issues
 
 ---
 

@@ -130,7 +130,7 @@ model ApkVersion {
   versionCode Int      @default(1)
   fileSize    String   @default("25 MB")
   releaseNote String   @default("")
-  downloadUrl String   @default("/apk/op-play.apk")
+  downloadUrl String   @default("/apk/o-play.apk")
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

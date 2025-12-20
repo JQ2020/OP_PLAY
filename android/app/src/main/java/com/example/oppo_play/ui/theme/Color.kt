@@ -10,7 +10,7 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-// Colors aligned to play-store-lite Tailwind theme.
+// Colors aligned to O Play Tailwind theme.
 val PlayGreen = Color(0xFF01875F)       // primary
 val PlayGreenDark = Color(0xFF016B4A)
 val PlayTeal = Color(0xFF10B19A)

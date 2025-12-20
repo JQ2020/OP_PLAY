@@ -1,8 +1,8 @@
-# OP Play - 应用商店 Web 应用
+# O Play - 应用商店 Web 应用
 
 一个基于 Google Play Store 设计风格的现代化应用商店 Web 应用。采用 Next.js 16 (App Router) + Tailwind CSS v4 构建，支持应用浏览、搜索、详情查看、远程安装等完整功能。
 
-![OP Play](public/oppo_market_icon.png)
+![O Play](public/oppo_market_icon.png)
 
 ## ✨ 功能特性
 
@@ -32,8 +32,8 @@
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/JQ2020/OP_PLAY.git
-cd play-store-lite
+git clone https://github.com/JQ2020/O_PLAY.git o-play
+cd o-play/server
 
 # 2. 安装依赖
 npm install
@@ -96,4 +96,4 @@ npx prisma studio    # 查看数据库
 
 **Built with ❤️ using Next.js, React, and Tailwind CSS**
 
-如有问题，请查看 [环境搭建文档](docs/SETUP.md) 或提交 [Issue](https://github.com/JQ2020/OP_PLAY/issues)
+如有问题，请查看 [环境搭建文档](docs/SETUP.md) 或提交 [Issue](https://github.com/JQ2020/O_PLAY/issues)

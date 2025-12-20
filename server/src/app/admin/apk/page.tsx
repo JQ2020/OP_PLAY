@@ -24,7 +24,7 @@ export default function AdminApkPage() {
     versionCode: 1,
     fileSize: "25 MB",
     releaseNote: "",
-    downloadUrl: "/apk/op-play.apk",
+    downloadUrl: "/apk/o-play.apk",
   });
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function AdminApkPage() {
         versionCode: data.versionCode || 1,
         fileSize: data.fileSize || "25 MB",
         releaseNote: data.releaseNote || "",
-        downloadUrl: data.downloadUrl || "/apk/op-play.apk",
+        downloadUrl: data.downloadUrl || "/apk/o-play.apk",
       });
     }
   };
@@ -190,7 +190,7 @@ export default function AdminApkPage() {
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Download URL</label>
                 <input
                   type="text"
-                  placeholder="/apk/op-play.apk"
+                  placeholder="/apk/o-play.apk"
                   value={formData.downloadUrl}
                   onChange={(e) => setFormData({ ...formData, downloadUrl: e.target.value })}
                   className="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-blue focus:outline-none focus:ring-1 focus:ring-primary-blue"
@@ -220,7 +220,7 @@ export default function AdminApkPage() {
                 {saving ? "Saving..." : "Save Version Info"}
               </button>
               <p className="text-xs text-gray-500 dark:text-gray-500">
-                Note: APK file should be manually uploaded to /public/apk/op-play.apk
+                Note: APK file should be manually uploaded to /public/apk/o-play.apk
               </p>
             </div>
           </form>
@@ -233,7 +233,7 @@ export default function AdminApkPage() {
           </h3>
           <ol className="list-decimal list-inside space-y-1 text-sm" style={{ color: 'var(--guide-text-color, #78350f)' }}>
             <li>Build your Android app and generate the APK file</li>
-            <li>Rename the APK file to <code className="rounded bg-amber-200 dark:bg-amber-900/50 px-1.5 py-0.5" style={{ color: 'var(--guide-title-color, #92400e)' }}>op-play.apk</code></li>
+            <li>Rename the APK file to <code className="rounded bg-amber-200 dark:bg-amber-900/50 px-1.5 py-0.5" style={{ color: 'var(--guide-title-color, #92400e)' }}>o-play.apk</code></li>
             <li>Place the file in <code className="rounded bg-amber-200 dark:bg-amber-900/50 px-1.5 py-0.5" style={{ color: 'var(--guide-title-color, #92400e)' }}>/public/apk/</code> directory</li>
             <li>Commit and deploy to update the download</li>
             <li>Update the version info above to reflect the changes</li>

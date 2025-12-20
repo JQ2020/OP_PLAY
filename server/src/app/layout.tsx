@@ -12,8 +12,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Play Store Lite",
-  description: "A lightweight storefront built with Next.js",
+  title: "O Play",
+  description: "O Play - A lightweight storefront built with Next.js",
 };
 
 export default function RootLayout({

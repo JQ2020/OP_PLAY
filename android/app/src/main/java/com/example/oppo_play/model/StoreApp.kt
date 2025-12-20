@@ -1,7 +1,7 @@
 package com.example.oppo_play.model
 
 /**
- * Domain model aligned to the App schema used by play-store-lite backend.
+ * Domain model aligned to the App schema used by O Play backend.
  */
 data class StoreApp(
     val id: String,
@@ -17,4 +17,3 @@ data class StoreApp(
     val version: String = "",
     val updatedAtMillis: Long = 0L
 )
-

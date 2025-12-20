@@ -14,7 +14,7 @@ export async function GET() {
         versionCode: 1,
         fileSize: "25 MB",
         releaseNote: "Initial release",
-        downloadUrl: "/apk/op-play.apk",
+        downloadUrl: "/apk/o-play.apk",
         isActive: true,
       },
       { status: 200 }

@@ -1,4 +1,4 @@
-# Play Store Lite - 技术概览
+# O Play - 技术概览
 
 ## 项目概述
 - **框架**：Next.js 16 (App Router, TypeScript, Webpack)。
